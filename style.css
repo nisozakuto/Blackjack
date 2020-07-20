@@ -1,7 +1,6 @@
 body {
     background-color: rgb(53, 101, 77);
     font-family: 'Rakkas', cursive;
-
 }
 
 .center {
@@ -10,11 +9,6 @@ body {
 
 .title {
     font-size: 4em;
-    /* color: white;
-    text-shadow: 10px 10px black; */
-    /* -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black; */
-
     -webkit-text-stroke: 1px black;
     color: white;
     text-shadow:
@@ -35,7 +29,7 @@ body {
     /* background-image: url(); */
 }
 
-.row {
+.cardsArea {
     display: flex;
 }
 

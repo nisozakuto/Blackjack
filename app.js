@@ -18,7 +18,8 @@ function test() {
 const yourBetText = document.querySelector(".yourBet");
 const yourMoneyText = document.querySelector(".yourMoney");
 yourMoneyText.innerHTML = yourMoney;
-
+const dealButton = document.querySelector('#deal');
+const cardsArea = document.querySelector(".cardsArea");
 
 let shape = Math.floor(Math.random() * 4) + 1;
 let numbers = Math.floor(Math.random() * 12) + 1;
@@ -36,9 +37,17 @@ function bet(amount) {
   yourMoneyText.innerHTML = yourMoney;
 }
 
+function deal() {
+  const newCard = document.createElement('div');
+  newCard.setAttribute('class', 'playerCard')
+  cardsArea.appendChild(newCard);
+}
+
 chips.forEach((chip, i) => {
   // chips[i].addEventListener('click', bet(chips[i].id));
   chips[i].addEventListener('click', bet);
   // console.log(chip.id);
   // console.log(chip.id);
 })
+
+dealButton.addEventListener('click', deal)
