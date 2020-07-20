@@ -5,6 +5,8 @@ let yourBet = 0;
 let yourMoney = 360;
 let firstCard = true;
 let hitButton;
+let playersHand = 0;
+let currentCardNumber;
 
 ///Testing below
 for (let i = 0; i < 100; i++) {
@@ -46,6 +48,10 @@ function bet(amount) {
   yourMoneyText.innerHTML = yourMoney;
 }
 
+function handCalculation() {
+
+}
+
 function deal() {
   if (yourBet === 0) {
     alert("Need to put some money down")
@@ -67,12 +73,14 @@ function deal() {
 }
 
 function playerGetsCards() {
+  currentCardNumber = parseInt(getRandomNumber());
+  playersHand += currentCardNumber;
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'playerCard')
-  newCard.style.backgroundImage = "url(/Blackjack/assets/" + getRandomNumber() +
-    getRandomShape() +
-    ".png";
+  newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(currentCardNumber) + getRandomShape() + ".png";
   playerZone.appendChild(newCard);
+  console.log("Total hand: " + playersHand)
+
 }
 
 function dealerGetsCards() {
@@ -82,9 +90,7 @@ function dealerGetsCards() {
     newCard.setAttribute('class', 'dealersFirstCard')
     firstCard = false;
   } else {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + getRandomNumber() +
-      getRandomShape() +
-      ".png";
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(getRandomNumber()) + getRandomShape() + ".png";
   }
   dealerZone.appendChild(newCard);
 }
@@ -106,8 +112,10 @@ function getRandomShape() {
 }
 
 function getRandomNumber() {
-  let numbers = Math.floor(Math.random() * 12) + 1;
+  return Math.floor(Math.random() * 12) + 1;
+}
 
+function convertTheNumber(numbers) {
   if (numbers === 1)
     numbers = "A"
   if (numbers === 11)
