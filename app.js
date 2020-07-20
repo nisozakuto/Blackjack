@@ -55,9 +55,13 @@ function deal() {
       playerGetsCards()
       //Dealer gets 2 cards
       dealerGetsCards()
-
     }
   }
+  const hitButton = document.createElement('button');
+  hitButton.setAttribute('class', 'hitButton')
+  hitButton.id = "hit";
+  hitButton.textContent = "Hit";
+  dealButton.after(hitButton)
 }
 
 function playerGetsCards() {

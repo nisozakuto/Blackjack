@@ -1,6 +1,15 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: rgb(53, 101, 77);
     font-family: 'Rakkas', cursive;
+    height: 100%;
+}
+
+main {
+    height: 700px;
 }
 
 .center {
@@ -46,7 +55,13 @@ body {
 
 .chipsArea {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-self: center;
+    justify-items: center;
+    justify-content: space-evenly;
+    max-width: 500px;
+    position: fixed;
+    bottom: 50px;
 }
 
 .chips {
@@ -59,19 +74,21 @@ body {
 }
 
 .dealerZone {
-    background-color: greenyellow;
+    /* background-color: greenyellow; */
     display: flex;
+    flex-wrap: wrap;
+    border: 4px solid firebrick;
     flex-grow: 1;
-
+    margin-left: 50px;
 }
 
 .playerZone {
-    background-color: aqua;
+    /* background-color: aqua; */
     display: flex;
-    flex-grow: 1;
-    max-width: 420px;
     flex-wrap: wrap;
-
+    border: 4px solid gray;
+    flex-grow: 1;
+    margin-right: 50px;
 }
 
 .startDiv {
