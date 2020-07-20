@@ -61,8 +61,8 @@ function deal() {
   myButton.setAttribute('class', 'hitButton')
   myButton.id = "hitButton";
   myButton.textContent = "Hit";
-
   dealButton.after(myButton)
+  dealButton.parentNode.removeChild(dealButton);
   myButton.addEventListener('click', playerGetsCards)
 }
 
