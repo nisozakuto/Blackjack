@@ -4,6 +4,7 @@ console.log("start");
 let yourBet = 0;
 let yourMoney = 360;
 let firstCard = true;
+let hitButton;
 
 ///Testing below
 for (let i = 0; i < 100; i++) {
@@ -25,7 +26,6 @@ const dealerZone = document.querySelector('.dealerZone');
 const playerZone = document.querySelector('.playerZone');
 const startButton = document.querySelector('.startButton');
 let startDiv = document.querySelector('.startDiv');
-
 
 // let playercard1 = document.querySelector(".playerCard");
 // playercard1.style.display = "block";
@@ -57,11 +57,13 @@ function deal() {
       dealerGetsCards()
     }
   }
-  const hitButton = document.createElement('button');
-  hitButton.setAttribute('class', 'hitButton')
-  hitButton.id = "hit";
-  hitButton.textContent = "Hit";
-  dealButton.after(hitButton)
+  const myButton = document.createElement('button');
+  myButton.setAttribute('class', 'hitButton')
+  myButton.id = "hitButton";
+  myButton.textContent = "Hit";
+
+  dealButton.after(myButton)
+  myButton.addEventListener('click', playerGetsCards)
 }
 
 function playerGetsCards() {
@@ -74,7 +76,6 @@ function playerGetsCards() {
 }
 
 function dealerGetsCards() {
-
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'playerCard')
   if (firstCard) {
@@ -115,7 +116,6 @@ function getRandomNumber() {
     numbers = "Q"
   if (numbers === 13)
     numbers = "K"
-
   return numbers;
 }
 
