@@ -11,8 +11,8 @@ I haven't played it for years and don't exactly remember the rules. I had to loo
 I thought to make a card game would be very cool, for a few reason. When I was working as in a QA role, my company came up with a card game and that was something I have never done it before. Now doing this course, I would like to accomplish developing a a card game. I think it would give me a lot of satisfaction.
 
 ## Wireframe
+[https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092452.jpg](wf2)
 
-![wf2]https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092452.jpg
 (Your wireframes go here. Preferably two or more)
 
 ## Initial thoughts on game structure
