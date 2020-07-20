@@ -12,6 +12,7 @@ I thought to make a card game would be very cool, for a few reason. When I was w
 
 ## Wireframe
 
+![wf2]https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092452.jpg
 (Your wireframes go here. Preferably two or more)
 
 ## Initial thoughts on game structure
