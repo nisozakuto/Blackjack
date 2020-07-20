@@ -3,6 +3,7 @@ console.log("start");
 //Variables
 let yourBet = 0;
 let yourMoney = 360;
+let firstCard = true;
 
 ///Testing below
 for (let i = 0; i < 100; i++) {
@@ -25,8 +26,7 @@ const playerZone = document.querySelector('.playerZone');
 const startButton = document.querySelector('.startButton');
 let startDiv = document.querySelector('.startDiv');
 
-let shape = Math.floor(Math.random() * 4) + 1;
-let numbers = Math.floor(Math.random() * 12) + 1;
+
 // let playercard1 = document.querySelector(".playerCard");
 // playercard1.style.display = "block";
 // playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
@@ -50,10 +50,69 @@ function deal() {
   if (yourBet === 0) {
     alert("Need to put some money down")
   } else {
-    const newCard = document.createElement('div');
-    newCard.setAttribute('class', 'playerCard')
-    cardsArea.appendChild(newCard);
+    //Player get 2 cards
+    for (let i = 0; i < 2; i++) {
+      playerGetsCards()
+      //Dealer gets 2 cards
+      dealerGetsCards()
+
+    }
   }
+}
+
+function playerGetsCards() {
+  const newCard = document.createElement('div');
+  newCard.setAttribute('class', 'playerCard')
+  newCard.style.backgroundImage = "url(/Blackjack/assets/" + getRandomNumber() +
+    getRandomShape() +
+    ".png";
+  playerZone.appendChild(newCard);
+}
+
+function dealerGetsCards() {
+
+  const newCard = document.createElement('div');
+  newCard.setAttribute('class', 'playerCard')
+  if (firstCard) {
+    newCard.setAttribute('class', 'dealersFirstCard')
+    firstCard = false;
+  } else {
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + getRandomNumber() +
+      getRandomShape() +
+      ".png";
+  }
+  dealerZone.appendChild(newCard);
+}
+
+function getRandomShape() {
+  let shape = Math.floor(Math.random() * 4) + 1;
+  // console.log("shape: ", shape, " Number: ", shape)
+  switch (shape) {
+    case 1:
+      shape = "C"
+    case 2:
+      shape = "D"
+    case 3:
+      shape = "H"
+    case 4:
+      shape = "S"
+  }
+  return shape
+}
+
+function getRandomNumber() {
+  let numbers = Math.floor(Math.random() * 12) + 1;
+
+  if (numbers === 1)
+    numbers = "A"
+  if (numbers === 11)
+    numbers = "J"
+  if (numbers === 12)
+    numbers = "Q"
+  if (numbers === 13)
+    numbers = "K"
+
+  return numbers;
 }
 
 chips.forEach((chip, i) => {

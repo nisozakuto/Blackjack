@@ -25,15 +25,23 @@ body {
     height: 210px;
     border: 1px solid black;
     background-size: cover;
+    /* flex-grow: 1; */
+
     /* background-image: url(/Blackjack/10C.png) */
     /* background-image: url(); */
 }
 
+.dealersFirstCard {
+    width: 138px;
+    height: 210px;
+    border: 1px solid black;
+    background-size: cover;
+    background-image: url("./assets/red_back.png");
+}
+
 .cardsArea {
     display: flex;
-    height: 250px;
     background-color: azure;
-
 }
 
 .chipsArea {
@@ -51,14 +59,18 @@ body {
 }
 
 .dealerZone {
-    height: 250px;
     background-color: greenyellow;
+    display: flex;
     flex-grow: 1;
+
 }
 
 .playerZone {
     background-color: aqua;
+    display: flex;
     flex-grow: 1;
+    max-width: 420px;
+    flex-wrap: wrap;
 
 }
 
