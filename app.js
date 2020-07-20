@@ -14,7 +14,7 @@ let shape = Math.floor(Math.random() * 4) + 1;
 let numbers = Math.floor(Math.random() * 12) + 1;
 let playercard1 = document.querySelector(".playerCard");
 playercard1.style.display = "block";
-playercard1.style.backgroundImage = "url(/Blackjack/10C.png";
+playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
 
 const chips = document.querySelectorAll('.chips');
 
