@@ -31,6 +31,9 @@ body {
 
 .cardsArea {
     display: flex;
+    height: 250px;
+    background-color: azure;
+
 }
 
 .chipsArea {
@@ -45,4 +48,29 @@ body {
     border: 5px dotted gold;
     margin: 10px;
     background-color: white;
+}
+
+.dealerZone {
+    height: 250px;
+    background-color: greenyellow;
+    flex-grow: 1;
+}
+
+.playerZone {
+    background-color: aqua;
+    flex-grow: 1;
+
+}
+
+.startDiv {
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 60px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
 }

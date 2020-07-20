@@ -20,14 +20,23 @@ const yourMoneyText = document.querySelector(".yourMoney");
 yourMoneyText.innerHTML = yourMoney;
 const dealButton = document.querySelector('#deal');
 const cardsArea = document.querySelector(".cardsArea");
+const dealerZone = document.querySelector('.dealerZone');
+const playerZone = document.querySelector('.playerZone');
+const startButton = document.querySelector('.startButton');
+let startDiv = document.querySelector('.startDiv');
 
 let shape = Math.floor(Math.random() * 4) + 1;
 let numbers = Math.floor(Math.random() * 12) + 1;
-let playercard1 = document.querySelector(".playerCard");
-playercard1.style.display = "block";
-playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
+// let playercard1 = document.querySelector(".playerCard");
+// playercard1.style.display = "block";
+// playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
 
 const chips = document.querySelectorAll('.chips');
+
+function startTheGame(e) {
+  startDiv.classList.remove('startDiv')
+  console.log(e)
+}
 
 function bet(amount) {
   // console.log("amount", amount.target.id)
@@ -38,9 +47,13 @@ function bet(amount) {
 }
 
 function deal() {
-  const newCard = document.createElement('div');
-  newCard.setAttribute('class', 'playerCard')
-  cardsArea.appendChild(newCard);
+  if (yourBet === 0) {
+    alert("Need to put some money down")
+  } else {
+    const newCard = document.createElement('div');
+    newCard.setAttribute('class', 'playerCard')
+    cardsArea.appendChild(newCard);
+  }
 }
 
 chips.forEach((chip, i) => {
@@ -51,3 +64,4 @@ chips.forEach((chip, i) => {
 })
 
 dealButton.addEventListener('click', deal)
+startButton.addEventListener('click', startTheGame)

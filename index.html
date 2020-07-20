@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Blackjack</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href='style.css'>
@@ -21,22 +21,28 @@
         <h1 class="center title">Blackjack</h1>
     </header>
     <main>
+        <div class="startDiv">
+            <button class="startButton">Start</button>
+        </div>
+
         <div class="Money">
             <h2>Your Money: <span class="yourMoney">0</span></h2>
             <h2>Your Bet: <span class="yourBet">0</span></h2>
         </div>
+
         <div class="chipsArea">
             <div class="chips" id="1">1</div>
             <div class="chips" id="5">5</div>
             <div class="chips" id="10">10</div>
             <div class="chips" id="50">50</div>
-
         </div>
+
         <button id="deal">Deal</button>
         <div class="cardsArea">
-            <div class='playerCard'></div>
-            <div class='playerCard'></div>
-            <div class='playerCard'></div>
+            <div class="playerZone"></div>
+            <div class="dealerZone"></div>
+            <!-- <div class='playerCard'></div> -->
+
         </div>
     </main>
     <script src="app.js" async defer></script>
