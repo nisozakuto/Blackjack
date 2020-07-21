@@ -28,6 +28,7 @@ const dealerZone = document.querySelector('.dealerZone');
 const playerZone = document.querySelector('.playerZone');
 const startButton = document.querySelector('.startButton');
 let startDiv = document.querySelector('.startDiv');
+let titleHolderDiv = document.querySelector('.titleHolder');
 
 // let playercard1 = document.querySelector(".playerCard");
 // playercard1.style.display = "block";
@@ -37,7 +38,9 @@ const chips = document.querySelectorAll('.chips');
 
 function startTheGame(e) {
   startDiv.classList.remove('startDiv')
-  console.log(e)
+  titleHolderDiv.classList.remove('titleHolder')
+  const startingH1 = document.querySelector('#startingH1')
+  startingH1.innerHTML = ""
 }
 
 function bet(amount) {
@@ -135,4 +138,9 @@ chips.forEach((chip, i) => {
 })
 
 dealButton.addEventListener('click', deal)
-startButton.addEventListener('click', startTheGame)
+// startButton.addEventListener('click', startTheGame)
+
+if (startDiv.classList.value == ('startDiv')) {
+  document.body.addEventListener('click', startTheGame)
+
+}
