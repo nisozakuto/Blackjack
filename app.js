@@ -198,6 +198,7 @@ let titleHolderDiv = document.querySelector('.titleHolder');
 const chips = document.querySelectorAll('.chips');
 const tenChip = document.querySelector('#tenChip');
 const dealButton = document.createElement('button');
+const newRound = document.querySelector('.newRound');
 
 dealButton.id = "deal";
 dealButton.textContent = "Deal";
@@ -241,6 +242,13 @@ function deal() {
   }
 
   //Create the Hit Button
+  createHitButton();
+
+  //Create the Stand Button
+  createStandButton();
+}
+
+function createHitButton() {
   const myButton = document.createElement('button');
   myButton.setAttribute('class', 'hitButton')
   myButton.id = "hitButton";
@@ -248,8 +256,9 @@ function deal() {
   dealButton.after(myButton)
   dealButton.parentNode.removeChild(dealButton);
   myButton.addEventListener('click', playerGetsCards);
+}
 
-  //Create the Stand Button
+function createStandButton() {
   const myStandButton = document.createElement('button');
   myStandButton.setAttribute('class', 'standButton')
   myStandButton.id = "standButton";
@@ -257,7 +266,6 @@ function deal() {
   myButton.after(myStandButton)
   myStandButton.addEventListener('click', stand);
 }
-
 
 //DEAL AND HIT
 function playerGetsCards() {
@@ -360,7 +368,6 @@ function getACard(player) {
   if (player == "player") {
     console.log("player is gettin a card")
   }
-
 }
 
 function generateTheCardDom(turn) {
@@ -408,3 +415,18 @@ document.body.addEventListener('click', () => {
     startTheGame();
   }
 })
+
+newRound.addEventListener('click', newRoundFunction);
+
+function newRoundFunction() {
+  playersHandObj = [];
+  dealersHandObj = [];
+  playerZone.innerHTML = ""
+  dealerZone.innerHTML = ""
+  tenChip.setAttribute('class', 'tenChip')
+  tenChip.innerHTML = ""
+  dealersAccumulator = 0;
+  playerAccumulator = 0;
+  deal();
+
+}
