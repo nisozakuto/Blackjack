@@ -7,7 +7,7 @@ let firstCard = true;
 let hitButton;
 let playersHand = 0;
 let currentCardNumber;
-
+let cardNumber = 1;
 ///Testing below
 for (let i = 0; i < 100; i++) {
   // let numbers = Math.floor(Math.random() * 12) + 1;
@@ -29,18 +29,22 @@ const playerZone = document.querySelector('.playerZone');
 const startButton = document.querySelector('.startButton');
 let startDiv = document.querySelector('.startDiv');
 let titleHolderDiv = document.querySelector('.titleHolder');
+const chips = document.querySelectorAll('.chips');
 
 // let playercard1 = document.querySelector(".playerCard");
 // playercard1.style.display = "block";
 // playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
 
-const chips = document.querySelectorAll('.chips');
-
 function startTheGame(e) {
   startDiv.classList.remove('startDiv')
   titleHolderDiv.classList.remove('titleHolder')
   const startingH1 = document.querySelector('#startingH1')
-  startingH1.innerHTML = ""
+  startingH1.remove()
+  // startingH1.innerHTML = ""
+  yourBet += 10;
+  yourMoney -= 10;
+  yourMoneyText.innerHTML = yourMoney;
+  yourBetText.innerHTML = yourBet
 }
 
 function bet(amount) {
@@ -56,15 +60,11 @@ function handCalculation() {
 }
 
 function deal() {
-  if (yourBet === 0) {
-    alert("Need to put some money down")
-  } else {
-    //Player get 2 cards
-    for (let i = 0; i < 2; i++) {
-      playerGetsCards()
-      //Dealer gets 2 cards
-      dealerGetsCards()
-    }
+  //Player get 2 cards
+  for (let i = 0; i < 2; i++) {
+    playerGetsCards()
+    //Dealer gets 2 cards
+    dealerGetsCards()
   }
   const myButton = document.createElement('button');
   myButton.setAttribute('class', 'hitButton')
@@ -75,15 +75,18 @@ function deal() {
   myButton.addEventListener('click', playerGetsCards)
 }
 
+//HIT
 function playerGetsCards() {
   currentCardNumber = parseInt(getRandomNumber());
   playersHand += currentCardNumber;
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'playerCard')
+  newCard.id = "playercardNumber" + cardNumber;
+  cardNumber++;
+
   newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(currentCardNumber) + getRandomShape() + ".png";
   playerZone.appendChild(newCard);
   console.log("Total hand: " + playersHand)
-
 }
 
 function dealerGetsCards() {
@@ -131,16 +134,15 @@ function convertTheNumber(numbers) {
 }
 
 chips.forEach((chip, i) => {
-  // chips[i].addEventListener('click', bet(chips[i].id));
   chips[i].addEventListener('click', bet);
-  // console.log(chip.id);
-  // console.log(chip.id);
 })
 
 dealButton.addEventListener('click', deal)
 // startButton.addEventListener('click', startTheGame)
 
-if (startDiv.classList.value == ('startDiv')) {
-  document.body.addEventListener('click', startTheGame)
 
+//START THE GAME
+if (startDiv.classList.value == ('startDiv')) {
+
+  document.body.addEventListener('click', startTheGame)
 }
