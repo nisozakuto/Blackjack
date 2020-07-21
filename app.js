@@ -179,6 +179,10 @@ const gameObj = {
   gameStarter() {
     this.isStarted = true;
   },
+  winner: null,
+  changeWinner(winner) {
+    this.winner = winner;
+  }
 }
 
 const yourBetText = document.querySelector(".yourBet");
@@ -209,10 +213,14 @@ function startTheGame(e) {
 
 function bet(amount) {
   betMoney = parseInt(amount.target.innerHTML);
-  yourBet += betMoney;
-  yourMoney -= betMoney;
-  yourBetText.innerHTML = yourBet;
-  yourMoneyText.innerHTML = yourMoney;
+  if (yourMoney < betMoney) {
+    alert("You do not have that much cash")
+  } else {
+    yourBet += betMoney;
+    yourMoney -= betMoney;
+    yourBetText.innerHTML = yourBet;
+    yourMoneyText.innerHTML = yourMoney;
+  }
 }
 
 function deal() {
@@ -290,18 +298,27 @@ function autoWinOrBust() {
     console.log("Dealer Lost")
   } else if (dealersAccumulator === 21) {
     console.log("BJ Win")
+    gameObj.changeWinner(dealer);
   } else if (playerAccumulator > 21) {
     console.log("Player Lost")
   } else if (playerAccumulator === 21) {
     console.log("BJ Win")
+    gameObj.changeWinner(player);
   } else if (dealersAccumulator >= playerAccumulator) {
     console.log("Dealer  wins")
-  } else if (
-    playerAccumulator > dealersAccumulator
-  ) {
+    gameObj.changeWinner(dealer);
+  } else if (playerAccumulator > dealersAccumulator) {
     console.log("player wins")
+    gameObj.changeWinner(player);
   } else {
     console.log("Did not win/lose yet")
+  }
+  console.log(gameObj.winner)
+  if (gameObj.winner == player) {
+
+    console.log(yourBet)
+    yourMoney += yourBet;
+    console.log(yourMoney)
   }
 }
 
