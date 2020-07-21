@@ -39,7 +39,7 @@ function startTheGame(e) {
   startDiv.classList.remove('startDiv')
   titleHolderDiv.classList.remove('titleHolder')
   const startingH1 = document.querySelector('#startingH1')
-  startingH1.remove()
+  startingH1.style.display = 'none';;
   // startingH1.innerHTML = ""
   yourBet += 10;
   yourMoney -= 10;
@@ -72,7 +72,14 @@ function deal() {
   myButton.textContent = "Hit";
   dealButton.after(myButton)
   dealButton.parentNode.removeChild(dealButton);
-  myButton.addEventListener('click', playerGetsCards)
+  myButton.addEventListener('click', playerGetsCards);
+
+  const myStandButton = document.createElement('button');
+  myStandButton.setAttribute('class', 'standButton')
+  myStandButton.id = "standButton";
+  myStandButton.textContent = "myStandButton";
+  myButton.after(myStandButton)
+  myStandButton.addEventListener('click', dealerGetsCards);
 }
 
 //HIT
@@ -83,7 +90,6 @@ function playerGetsCards() {
   newCard.setAttribute('class', 'playerCard')
   newCard.id = "playercardNumber" + cardNumber;
   cardNumber++;
-
   newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(currentCardNumber) + getRandomShape() + ".png";
   playerZone.appendChild(newCard);
   console.log("Total hand: " + playersHand)
@@ -140,9 +146,7 @@ chips.forEach((chip, i) => {
 dealButton.addEventListener('click', deal)
 // startButton.addEventListener('click', startTheGame)
 
-
 //START THE GAME
-if (startDiv.classList.value == ('startDiv')) {
-
+if (startDiv.classList.value === ('startDiv')) {
   document.body.addEventListener('click', startTheGame)
 }
