@@ -1,58 +1,168 @@
 console.log("start");
-let cards = [
-  "2C",
-  "2D",
-  "2H",
-  "2S",
-  "3C",
-  "3D",
-  "3H",
-  "3S",
-  "4C",
-  "4D",
-  "4H",
-  "4S",
-  "5C",
-  "5D",
-  "5H",
-  "5S",
-  "6C",
-  "6D",
-  "6H",
-  "6S",
-  "7C",
-  "7D",
-  "7H",
-  "7S",
-  "8C",
-  "8D",
-  "8H",
-  "8S",
-  "9C",
-  "9D",
-  "9H",
-  "9S",
-  "10C",
-  "10D",
-  "10H",
-  "10S",
-  "JC",
-  "JD",
-  "JH",
-  "JS",
-  "QC",
-  "QD",
-  "QH",
-  "QS",
-  "KC",
-  "KD",
-  "KH",
-  "KS",
-  "AC",
-  "AD",
-  "AH",
-  "AS"
-]
+let cards = [{
+  id: "2C",
+  value: 2,
+}, {
+  id: "2D",
+  value: 2
+}, {
+  id: "2S",
+  value: 2
+}, {
+  id: "2H",
+  value: 2
+}, {
+  id: "3C",
+  value: 3
+}, {
+  id: "3D",
+  value: 3
+}, {
+  id: "3S",
+  value: 3
+}, {
+  id: "3H",
+  value: 3
+}, {
+  id: "4C",
+  value: 4
+}, {
+  id: "4D",
+  value: 4
+}, {
+  id: "4S",
+  value: 4
+}, {
+  id: "4H",
+  value: 4
+}, {
+  id: "5C",
+  value: 5
+}, {
+  id: "5D",
+  value: 5
+}, {
+  id: "5S",
+  value: 5
+}, {
+  id: "5H",
+  value: 5
+}, {
+  id: "6C",
+  value: 6
+}, {
+  id: "6D",
+  value: 6
+}, {
+  id: "6S",
+  value: 6
+}, {
+  id: "6H",
+  value: 6
+}, {
+  id: "7C",
+  value: 7
+}, {
+  id: "7D",
+  value: 7
+}, {
+  id: "7S",
+  value: 7
+}, {
+  id: "7H",
+  value: 7
+}, {
+  id: "8C",
+  value: 8
+}, {
+  id: "8D",
+  value: 8
+}, {
+  id: "8S",
+  value: 8
+}, {
+  id: "8H",
+  value: 8
+}, {
+  id: "9C",
+  value: 9
+}, {
+  id: "9D",
+  value: 9
+}, {
+  id: "9S",
+  value: 9
+}, {
+  id: "9H",
+  value: 9
+}, {
+  id: "10C",
+  value: 10
+}, {
+  id: "10D",
+  value: 10
+}, {
+  id: "10S",
+  value: 10
+}, {
+  id: "10H",
+  value: 10
+}, {
+  id: "JC",
+  value: 10
+}, {
+  id: "JD",
+  value: 10
+}, {
+  id: "JS",
+  value: 10
+}, {
+  id: "JH",
+  value: 10
+}, {
+  id: "QC",
+  value: 10
+}, {
+  id: "QD",
+  value: 10
+}, {
+  id: "QS",
+  value: 10
+}, {
+  id: "QH",
+  value: 10
+}, {
+  id: "KC",
+  value: 10
+}, {
+  id: "KD",
+  value: 10
+}, {
+  id: "KS",
+  value: 10
+}, {
+  id: "KH",
+  value: 10
+}, {
+  id: "AC",
+  value: 10
+}, {
+  id: "AD",
+  value: 11
+}, {
+  id: "AS",
+  value: 11
+}, {
+  id: "AH",
+  value: 11
+}]
+for (let i = 0; i < 300; i++) {
+  // console.log(cards[Math.floor(Math.random() * cards.length - 1) + 1]);
+}
+
+let playersHandObj = [];
+let dealersHandObj = [];
+
 //Variables
 let hitButton, currentCardNumber, yourBet = 0,
   firstCard = true,
@@ -93,16 +203,11 @@ let titleHolderDiv = document.querySelector('.titleHolder');
 const chips = document.querySelectorAll('.chips');
 const tenChip = document.querySelector('#tenChip');
 
-// let playercard1 = document.querySelector(".playerCard");
-// playercard1.style.display = "block";
-// playercard1.style.backgroundImage = "url(/Blackjack/assets/10C.png";
-
 function startTheGame(e) {
   startDiv.classList.remove('startDiv')
   titleHolderDiv.classList.remove('titleHolder')
   const startingH1 = document.querySelector('#startingH1')
   startingH1.style.display = 'none';;
-  // startingH1.innerHTML = ""
   yourBet += 10;
   yourMoney -= 10;
   yourMoneyText.innerHTML = yourMoney;
@@ -129,6 +234,7 @@ function deal() {
   //First Player get 2 cards
   for (let i = 0; i < 2; i++) {
     playerGetsCards()
+    console.log("deal")
   }
   //Dealer gets 2 cards
   for (let i = 0; i < 2; i++) {
@@ -152,26 +258,32 @@ function deal() {
 }
 
 let newCard;
+
 //DEAL AND HIT
 function playerGetsCards() {
-  getACardNumber();
+  playersHandObj.push(cards[Math.floor(Math.random() * cards.length - 1) + 1])
   generateTheCardDom("playerCard");
-  if (currentCardNumber == 1) {
-    console.log("player got 1")
-  }
-  if (currentCardNumber > 10) {
-    playersHand += 10;
-  } else {
-    playersHand += currentCardNumber;
-  }
-  newCard.id = "playercardNumber" + cardNumber;
-  cardNumber++;
-  newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(currentCardNumber) + getRandomShape() + ".png";
+  // console.log("obj length", playersHandObj[playersHandObj.length - 1].id);
+  newCard.style.backgroundImage = "url(/Blackjack/assets/" + playersHandObj[playersHandObj.length - 1].id + ".png";
   playerZone.appendChild(newCard);
-  console.log("Players Total hand: " + playersHand)
+  // console.log("Players Total hand: " + playersHand)
   updateHands();
+
+  // if (currentCardNumber == 1) {
+  //   console.log("player got 1")
+  // }
+  // if (currentCardNumber > 10) {
+  //   playersHand += 10;
+  // } else {
+  //   playersHand += currentCardNumber;
+  // }
+  // newCard.id = "playercardNumber" + cardNumber;
+  // cardNumber++;
+
 }
 
+
+//UPDATE HANDS
 function updateHands() {
   const playersHandText = document.querySelector('#playersHand');
   playersHandText.innerText = playersHand;
@@ -179,6 +291,8 @@ function updateHands() {
   dealersHandText.innerHTML = dealersHand;
 }
 
+
+//AUTO WIN OR BUST
 function autoWinOrLoss() {
   if (dealersHand > 21) {
     console.log("Dealer Lost")
@@ -198,29 +312,29 @@ function autoWinOrLoss() {
 //Deal for Dealer
 function dealerGetsCards() {
   console.log("===")
-  getACardNumber();
+
+  dealersHandObj.push(cards[Math.floor(Math.random() * cards.length - 1) + 1])
+
+
   if (currentCardNumber > 10) {
     dealersHand += 10;
   } else {
     dealersHand += currentCardNumber;
   }
-  let dealersNumberAndShape = convertTheNumber(currentCardNumber) + getRandomShape();
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'dealersCards')
   if (firstCard) {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersNumberAndShape + ".png";
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersHandObj[dealersHandObj.length - 1].id + ".png";
     newCard.setAttribute('class', ' dealersCards dealersFirstCard hideCard')
     firstCard = false;
   } else {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersNumberAndShape + ".png";
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersHandObj[dealersHandObj.length - 1].id + ".png";
   }
   dealerZone.appendChild(newCard);
   updateHands();
 }
 
-function getACardNumber() {
-  currentCardNumber = parseInt(getRandomNumber());
-}
+
 
 function generateTheCardDom(turn) {
   newCard = document.createElement('div');
@@ -237,6 +351,8 @@ function stand() {
     const hitButton = document.querySelector('#hitButton')
     hitButton.remove();
     isHitPressed = true;
+    const standButton = document.querySelector('#standButton')
+    standButton.remove();
   }
   const firstCard = document.querySelector('.hideCard')
   firstCard.removeAttribute('class', 'hideCard');
@@ -262,9 +378,9 @@ function getRandomShape() {
   return shape
 }
 
-function getRandomNumber() {
-  return Math.floor(Math.random() * 12) + 1;
-}
+
+
+
 
 function convertTheNumber(numbers) {
   if (numbers === 1)
