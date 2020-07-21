@@ -67,11 +67,8 @@ main {
     height: 210px;
     border: 1px solid black;
     background-size: cover;
-    /* flex-grow: 1; */
-    /* background-image: url(/Blackjack/10C.png) */
-    /* background-image: url(); */
-}
 
+}
 
 .dealersCards {
     width: 138px;
@@ -80,14 +77,17 @@ main {
     background-size: cover;
 }
 
-
-
 .dealersFirstCard {
     width: 138px;
     height: 210px;
     border: 1px solid black;
     background-size: cover;
 }
+
+/* .showDealersCard {
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+} */
 
 .hideCard {
     background-image: url("./assets/red_back.png") !important;

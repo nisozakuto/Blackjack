@@ -145,7 +145,7 @@ let cards = [{
   value: 10
 }, {
   id: "AC",
-  value: 10
+  value: 11
 }, {
   id: "AD",
   value: 11
@@ -156,10 +156,6 @@ let cards = [{
   id: "AH",
   value: 11
 }]
-for (let i = 0; i < 300; i++) {
-  // console.log(cards[Math.floor(Math.random() * cards.length - 1) + 1]);
-}
-
 let playersHandObj = [];
 let dealersHandObj = [];
 
@@ -170,25 +166,20 @@ let hitButton, currentCardNumber, yourBet = 0,
   playersHand = 0,
   dealersHand = 0,
   cardNumber = 1,
-  isHitPressed = false;
+  isHitPressed = false,
+  newCard, betMoney, dealersAccumulator = 0,
+  playerAccumulator = 0,
+  isStand = false,
+  dealer = "dealer",
+  player = "player",
+  tempDealerCard;
 
 const gameObj = {
   isStarted: false,
   gameStarter() {
     this.isStarted = true;
   },
-
 }
-///Testing below
-for (let i = 0; i < 100; i++) {
-  // let numbers = Math.floor(Math.random() * 12) + 1;
-  // console.log(numbers)
-}
-//TEST FUNC
-function test() {
-  console.log("TEST")
-}
-////TEST FINISHED
 
 const yourBetText = document.querySelector(".yourBet");
 const yourMoneyText = document.querySelector(".yourMoney");
@@ -207,7 +198,7 @@ function startTheGame(e) {
   startDiv.classList.remove('startDiv')
   titleHolderDiv.classList.remove('titleHolder')
   const startingH1 = document.querySelector('#startingH1')
-  startingH1.style.display = 'none';;
+  startingH1.style.display = 'none';
   yourBet += 10;
   yourMoney -= 10;
   yourMoneyText.innerHTML = yourMoney;
@@ -217,30 +208,24 @@ function startTheGame(e) {
 }
 
 function bet(amount) {
-  let betMoney = 0;
   betMoney = parseInt(amount.target.innerHTML);
-  console.log(betMoney)
   yourBet += betMoney;
   yourMoney -= betMoney;
   yourBetText.innerHTML = yourBet;
   yourMoneyText.innerHTML = yourMoney;
 }
 
-function handCalculation() {
-
-}
-
 function deal() {
   //First Player get 2 cards
   for (let i = 0; i < 2; i++) {
     playerGetsCards()
-    console.log("deal")
   }
   //Dealer gets 2 cards
   for (let i = 0; i < 2; i++) {
     dealerGetsCards()
   }
 
+  //Create the Hit Button
   const myButton = document.createElement('button');
   myButton.setAttribute('class', 'hitButton')
   myButton.id = "hitButton";
@@ -249,6 +234,7 @@ function deal() {
   dealButton.parentNode.removeChild(dealButton);
   myButton.addEventListener('click', playerGetsCards);
 
+  //Create the Stand Button
   const myStandButton = document.createElement('button');
   myStandButton.setAttribute('class', 'standButton')
   myStandButton.id = "standButton";
@@ -257,17 +243,23 @@ function deal() {
   myStandButton.addEventListener('click', stand);
 }
 
-let newCard;
 
 //DEAL AND HIT
 function playerGetsCards() {
-  playersHandObj.push(cards[Math.floor(Math.random() * cards.length - 1) + 1])
+  tempPlayerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
+  playersHandObj.push(tempPlayerCard)
+  playerAccumulator = playersHandObj[playersHandObj.length - 1].value + playerAccumulator
+  console.log('playerAccumulator', playerAccumulator)
   generateTheCardDom("playerCard");
-  // console.log("obj length", playersHandObj[playersHandObj.length - 1].id);
   newCard.style.backgroundImage = "url(/Blackjack/assets/" + playersHandObj[playersHandObj.length - 1].id + ".png";
   playerZone.appendChild(newCard);
-  // console.log("Players Total hand: " + playersHand)
-  updateHands();
+  updateTheScoreOnPage();
+  // autoWinOrBust();
+
+  if (playerAccumulator == 21)
+    console.log("Player Won")
+  if (playerAccumulator > 21)
+    console.log("Player Lost")
 
   // if (currentCardNumber == 1) {
   //   console.log("player got 1")
@@ -279,48 +271,43 @@ function playerGetsCards() {
   // }
   // newCard.id = "playercardNumber" + cardNumber;
   // cardNumber++;
-
 }
 
 
-//UPDATE HANDS
-function updateHands() {
+//UPDATE THE SCORE ON PAGE
+function updateTheScoreOnPage() {
   const playersHandText = document.querySelector('#playersHand');
-  playersHandText.innerText = playersHand;
+  playersHandText.innerText = playerAccumulator;
   const dealersHandText = document.querySelector('#dealersHand');
-  dealersHandText.innerHTML = dealersHand;
+  dealersHandText.innerHTML = dealersAccumulator;
 }
-
 
 //AUTO WIN OR BUST
-function autoWinOrLoss() {
-  if (dealersHand > 21) {
+function autoWinOrBust() {
+  console.log("Checking")
+  console.log("Dealer: ", dealersAccumulator, " Player: ", playerAccumulator);
+  if (dealersAccumulator > 21) {
     console.log("Dealer Lost")
-  }
-  if (dealersHand === 21) {
+  } else if (dealersAccumulator === 21) {
     console.log("BJ Win")
-  }
-  if (playersHand > 21) {
+  } else if (playerAccumulator > 21) {
     console.log("Player Lost")
-  }
-  if (playersHand === 21) {
+  } else if (playerAccumulator === 21) {
     console.log("BJ Win")
+  } else if (dealersAccumulator >= playerAccumulator) {
+    console.log("Dealer  wins")
+  } else if (
+    playerAccumulator > dealersAccumulator
+  ) {
+    console.log("player wins")
+  } else {
+    console.log("Did not win/lose yet")
   }
 }
-
 
 //Deal for Dealer
 function dealerGetsCards() {
-  console.log("===")
-
-  dealersHandObj.push(cards[Math.floor(Math.random() * cards.length - 1) + 1])
-
-
-  if (currentCardNumber > 10) {
-    dealersHand += 10;
-  } else {
-    dealersHand += currentCardNumber;
-  }
+  getACard(dealer)
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'dealersCards')
   if (firstCard) {
@@ -331,18 +318,32 @@ function dealerGetsCards() {
     newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersHandObj[dealersHandObj.length - 1].id + ".png";
   }
   dealerZone.appendChild(newCard);
-  updateHands();
+  updateTheScoreOnPage();
+  if (isStand)
+    console.log("Standing")
 }
 
+function getACard(player) {
+  if (player == "dealer") {
+    tempDealerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
+    dealersHandObj.push(tempDealerCard)
+    console.log("Dealers card: ", tempDealerCard)
 
+    // dealersHandObj.forEach((e) => {
+    //   dealersAccumulator += e.value;
+    //   console.log('dealersAccumulator ', dealersAccumulator);
+    // })
+
+  }
+  if (player == "player") {
+    console.log("player is gettin a card")
+  }
+
+}
 
 function generateTheCardDom(turn) {
   newCard = document.createElement('div');
   newCard.setAttribute('class', turn);
-}
-
-function calculateWinner() {
-  console.log('calculateWinner')
 }
 
 //STAND
@@ -354,44 +355,23 @@ function stand() {
     const standButton = document.querySelector('#standButton')
     standButton.remove();
   }
-  const firstCard = document.querySelector('.hideCard')
-  firstCard.removeAttribute('class', 'hideCard');
-  firstCard.setAttribute('class', 'dealersCards')
-
-  dealerGetsCards();
-  autoWinOrLoss();
-}
-
-function getRandomShape() {
-  let shape = Math.floor(Math.random() * 4) + 1;
-  // console.log("shape: ", shape, " Number: ", shape)
-  switch (shape) {
-    case 1:
-      shape = "C"
-    case 2:
-      shape = "D"
-    case 3:
-      shape = "H"
-    case 4:
-      shape = "S"
+  isStand = true;
+  console.log("Stand!!!!")
+  console.log(dealersHandObj)
+  // dealersAccumulator = 0;
+  dealersHandObj.forEach((e) => {
+    dealersAccumulator += e.value;
+    console.log('dealersAccumulator ', dealersAccumulator);
+  })
+  // while (dealersAccumulator < 16) {
+  //   console.log("In the while")
+  // }
+  if (dealersAccumulator < 16) {
+    getACard()
   }
-  return shape
-}
-
-
-
-
-
-function convertTheNumber(numbers) {
-  if (numbers === 1)
-    numbers = "A"
-  if (numbers === 11)
-    numbers = "J"
-  if (numbers === 12)
-    numbers = "Q"
-  if (numbers === 13)
-    numbers = "K"
-  return numbers;
+  const firstCard = document.querySelector('.hideCard')
+  autoWinOrBust();
+  firstCard.setAttribute('class', 'dealersCards')
 }
 
 chips.forEach((chip, i) => {
