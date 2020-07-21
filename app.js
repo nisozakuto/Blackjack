@@ -1,13 +1,13 @@
 console.log("start");
 
 //Variables
-let yourBet = 0;
-let yourMoney = 360;
-let firstCard = true;
-let hitButton;
-let playersHand = 0;
-let currentCardNumber;
-let cardNumber = 1;
+let hitButton, currentCardNumber, yourBet = 0,
+  firstCard = true,
+  yourMoney = 360,
+  playersHand = 0,
+  dealersHand = 0,
+  cardNumber = 1;
+
 ///Testing below
 for (let i = 0; i < 100; i++) {
   // let numbers = Math.floor(Math.random() * 12) + 1;
@@ -60,12 +60,17 @@ function handCalculation() {
 }
 
 function deal() {
-  //Player get 2 cards
+  //First Player get 2 cards
   for (let i = 0; i < 2; i++) {
     playerGetsCards()
-    //Dealer gets 2 cards
+    console.log("Dealing for player")
+  }
+  console.log("Dealing")
+  //Dealer gets 2 cards
+  for (let i = 0; i < 2; i++) {
     dealerGetsCards()
   }
+
   const myButton = document.createElement('button');
   myButton.setAttribute('class', 'hitButton')
   myButton.id = "hitButton";
@@ -77,12 +82,12 @@ function deal() {
   const myStandButton = document.createElement('button');
   myStandButton.setAttribute('class', 'standButton')
   myStandButton.id = "standButton";
-  myStandButton.textContent = "myStandButton";
+  myStandButton.textContent = "Stand";
   myButton.after(myStandButton)
   myStandButton.addEventListener('click', dealerGetsCards);
 }
 
-//HIT
+//DEAL AND HIT
 function playerGetsCards() {
   currentCardNumber = parseInt(getRandomNumber());
   playersHand += currentCardNumber;
@@ -95,16 +100,28 @@ function playerGetsCards() {
   console.log("Total hand: " + playersHand)
 }
 
+//Deal for Dealer
 function dealerGetsCards() {
+  currentCardNumber = parseInt(getRandomNumber());
+  dealersHand += currentCardNumber;
+  console.log(dealersHand)
+  let dealersNumberAndShape = convertTheNumber(currentCardNumber) + getRandomShape();
+  console.log(dealersNumberAndShape)
   const newCard = document.createElement('div');
-  newCard.setAttribute('class', 'playerCard')
+  newCard.setAttribute('class', 'dealersCards')
   if (firstCard) {
-    newCard.setAttribute('class', 'dealersFirstCard')
+    newCard.setAttribute('class', ' dealersFirstCard')
     firstCard = false;
   } else {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(getRandomNumber()) + getRandomShape() + ".png";
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersNumberAndShape + ".png";
   }
+  console.log("Dealders cards: ", currentCardNumber);
   dealerZone.appendChild(newCard);
+}
+
+//STAND
+function stand() {
+
 }
 
 function getRandomShape() {

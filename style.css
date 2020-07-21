@@ -68,9 +68,16 @@ main {
     border: 1px solid black;
     background-size: cover;
     /* flex-grow: 1; */
-
     /* background-image: url(/Blackjack/10C.png) */
     /* background-image: url(); */
+}
+
+
+.dealersCards {
+    width: 138px;
+    height: 210px;
+    border: 1px solid black;
+    background-size: cover;
 }
 
 .dealersFirstCard {
