@@ -12,6 +12,16 @@ main {
     height: 700px;
 }
 
+p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
 .center {
     text-align: center;
 }
@@ -52,7 +62,8 @@ main {
     font-size: 3em;
 }
 
-.money {
+.money,
+.score {
     display: flex;
     justify-content: space-evenly;
 }
