@@ -30,6 +30,7 @@ const startButton = document.querySelector('.startButton');
 let startDiv = document.querySelector('.startDiv');
 let titleHolderDiv = document.querySelector('.titleHolder');
 const chips = document.querySelectorAll('.chips');
+const tenChip = document.querySelector('#tenChip');
 
 // let playercard1 = document.querySelector(".playerCard");
 // playercard1.style.display = "block";
@@ -44,7 +45,8 @@ function startTheGame(e) {
   yourBet += 10;
   yourMoney -= 10;
   yourMoneyText.innerHTML = yourMoney;
-  yourBetText.innerHTML = yourBet
+  yourBetText.innerHTML = yourBet;
+  tenChip.id = 'tenChipMove';
 }
 
 function bet(amount) {

@@ -173,3 +173,27 @@ main {
     transform: rotate(10deg);
 
 }
+
+#tenChipMove {
+    animation: chips-in 3s 1;
+    position: relative;
+    top: 1px;
+    left: 350px;
+}
+
+@keyframes chips-in {
+    0% {
+        /* right: 10px; */
+        top: 300px;
+        left: 150px;
+    }
+
+    50% {
+        /* right: 20px; */
+    }
+
+    100% {
+        top: 1px;
+        left: 350px;
+    }
+}
