@@ -188,7 +188,7 @@ const gameObj = {
 const yourBetText = document.querySelector(".yourBet");
 const yourMoneyText = document.querySelector(".yourMoney");
 yourMoneyText.innerHTML = yourMoney;
-const dealButton = document.querySelector('#deal');
+// const dealButton = document.querySelector('#deal');
 const cardsArea = document.querySelector(".cardsArea");
 const dealerZone = document.querySelector('.dealerZone');
 const playerZone = document.querySelector('.playerZone');
@@ -197,6 +197,13 @@ let startDiv = document.querySelector('.startDiv');
 let titleHolderDiv = document.querySelector('.titleHolder');
 const chips = document.querySelectorAll('.chips');
 const tenChip = document.querySelector('#tenChip');
+const dealButton = document.createElement('button');
+
+dealButton.id = "deal";
+dealButton.textContent = "Deal";
+cardsArea.before(dealButton)
+dealButton.addEventListener('click', deal);
+
 
 function startTheGame(e) {
   startDiv.classList.remove('startDiv')
@@ -315,12 +322,12 @@ function autoWinOrBust() {
   }
   console.log(gameObj.winner)
   if (gameObj.winner == player) {
-
     console.log(yourBet)
     yourMoney += yourBet;
     console.log(yourMoney)
   }
 }
+
 
 //Deal for Dealer
 function dealerGetsCards() {
@@ -345,12 +352,10 @@ function getACard(player) {
     tempDealerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
     dealersHandObj.push(tempDealerCard)
     console.log("Dealers card: ", tempDealerCard)
-
     // dealersHandObj.forEach((e) => {
     //   dealersAccumulator += e.value;
     //   console.log('dealersAccumulator ', dealersAccumulator);
     // })
-
   }
   if (player == "player") {
     console.log("player is gettin a card")
