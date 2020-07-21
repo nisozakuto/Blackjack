@@ -174,11 +174,17 @@ main {
 
 }
 
+#tenChip {
+    display: none;
+
+}
+
 #tenChipMove {
     animation: chips-in 3s 1;
     position: relative;
     top: 1px;
     left: 350px;
+    display: block;
 }
 
 @keyframes chips-in {
