@@ -169,7 +169,7 @@ function deal() {
   myStandButton.id = "standButton";
   myStandButton.textContent = "Stand";
   myButton.after(myStandButton)
-  myStandButton.addEventListener('click', dealerGetsCards);
+  myStandButton.addEventListener('click', stand);
 }
 
 let newCard;
@@ -184,26 +184,38 @@ function playerGetsCards() {
   cardNumber++;
   newCard.style.backgroundImage = "url(/Blackjack/assets/" + convertTheNumber(currentCardNumber) + getRandomShape() + ".png";
   playerZone.appendChild(newCard);
-  console.log("Total hand: " + playersHand)
+  // console.log("Players Total hand: " + playersHand)
+  updateHands();
+}
+
+function updateHands() {
+  const playersHandText = document.querySelector('#playersHand');
+  playersHandText.innerText = playersHand;
+  const dealersHandText = document.querySelector('#dealersHand');
+  dealersHandText.innerHTML = dealersHand;
 }
 
 //Deal for Dealer
 function dealerGetsCards() {
+  calculateWinner();
+  console.log("===")
   getACardNumber();
   dealersHand += currentCardNumber;
   let dealersNumberAndShape = convertTheNumber(currentCardNumber) + getRandomShape();
   const newCard = document.createElement('div');
   newCard.setAttribute('class', 'dealersCards')
   if (firstCard) {
-    newCard.setAttribute('class', ' dealersFirstCard')
+    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersNumberAndShape + ".png";
+    newCard.setAttribute('class', ' dealersCards dealersFirstCard hideCard')
     firstCard = false;
   } else {
     newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersNumberAndShape + ".png";
   }
   dealerZone.appendChild(newCard);
-  console.log(dealersNumberAndShape)
-  console.log(dealersHand)
-  console.log("Dealders cards: ", currentCardNumber);
+  console.log('dealersNumberAndShape', dealersNumberAndShape)
+  console.log('dealersHand', dealersHand)
+  console.log("Dealders card: ", currentCardNumber);
+  updateHands();
 }
 
 function getACardNumber() {
@@ -215,10 +227,24 @@ function generateTheCardDom(turn) {
   newCard.setAttribute('class', turn);
 }
 
+function calculateWinner() {
+  console.log('calculateWinner')
+}
+
 //STAND
 function stand() {
-  const hitButton = document.querySelector('#hitButton')
-  hitButton.parentElement.removeChild(hitButton);
+  // const hitButton = document.querySelector('#hitButton')
+  // hitButton.parentElement.removeChild(hitButton);
+
+  // newCard.setAttribute('class', 'dealersFirstCard')
+
+  const firstCard = document.querySelector('.hideCard')
+  firstCard.removeAttribute('class', 'hideCard');
+  firstCard.setAttribute('class', 'dealersCards')
+
+  dealerGetsCards();
+
+
 }
 
 function getRandomShape() {

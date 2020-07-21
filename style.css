@@ -80,12 +80,17 @@ main {
     background-size: cover;
 }
 
+
+
 .dealersFirstCard {
     width: 138px;
     height: 210px;
     border: 1px solid black;
     background-size: cover;
-    background-image: url("./assets/red_back.png");
+}
+
+.hideCard {
+    background-image: url("./assets/red_back.png") !important;
 }
 
 .cardsArea {
