@@ -328,7 +328,7 @@ function autoWinOrBust() {
     gameObj.changeWinner(dealer);
   } else if (playerAccumulator > 21) {
     console.log("Player Lost")
-    alert("You lost!!");
+    // alert("You lost!!");
   } else if (dealersAccumulator == playerAccumulator) {
     alert("Push");
     yourMoney += yourBet;
@@ -346,10 +346,11 @@ function autoWinOrBust() {
     console.log(yourBet)
     yourMoney += (yourBet * 2);
     console.log(yourMoney)
-    alert("You won!! $", (yourBet * 2));
+    // alert("You won!! $", (yourBet * 2));
   }
   if (gameObj.winner == dealer) {
-    alert("You lost!!");
+    console.log("ALERTTT DEALER WON")
+    // alert("Dealer wins!!");
   }
 }
 
@@ -383,6 +384,7 @@ function getACard(player) {
 }
 
 function generateTheCardDom(turn, fileName, whatZonetoAppend) {
+  // console.log("generating the new card")
   newCard = document.createElement('div');
   newCard.setAttribute('class', turn);
   newCard.style.backgroundImage = "url(/Blackjack/assets/" + fileName + ".png";
@@ -419,6 +421,9 @@ function stand() {
   while (dealersAccumulator < 17) {
     console.log("Dealerscards is less than 16?")
     getACard(dealer)
+    setTimeout(() => {
+      generateTheCardDom('dealersCards', dealersHandObj[dealersHandObj.length - 1].id, dealerZone)
+    }, 600);
   }
   const firstCard = document.querySelector('.hideCard')
   autoWinOrBust();
