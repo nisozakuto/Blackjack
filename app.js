@@ -145,15 +145,19 @@ let cards = [{
   value: 10
 }, {
   id: "AC",
+  suit: "A",
   value: 11
 }, {
   id: "AD",
+  suit: "A",
   value: 11
 }, {
   id: "AS",
+  suit: "A",
   value: 11
 }, {
   id: "AH",
+  suit: "A",
   value: 11
 }]
 
@@ -166,7 +170,8 @@ let hitButton, currentCardNumber, yourBet = 0,
   cardNumber = 1,
   isHitPressed = false,
   isDealPressed = false,
-  newCard, betMoney, dealersAccumulator = 0,
+  newCard, betMoney = 0,
+  dealersAccumulator = 0,
   playerAccumulator = 0,
   isStand = false,
   dealer = "dealer",
@@ -209,6 +214,7 @@ let myStandButton, myHitButton;
 const chips = document.querySelectorAll('.chips');
 const tenChip = document.querySelector('#tenChip');
 
+//RUN ONE TIME 
 yourMoneyText.innerHTML = yourMoney;
 
 dealButton.id = "deal";
@@ -216,6 +222,12 @@ dealButton.textContent = "Deal";
 buttonsZone.appendChild(dealButton)
 dealButton.addEventListener('click', deal);
 
+//START THE GAME
+document.body.addEventListener('click', () => {
+  if (!gameObj.isStarted) {
+    startTheGame();
+  }
+})
 //Functions
 function startTheGame(e) {
   startDiv.classList.remove('startDiv')
@@ -223,12 +235,23 @@ function startTheGame(e) {
   const startingH1 = document.querySelector('#startingH1')
   startingH1.style.display = 'none';
   yourBet += 10;
+  // yourBet = betMoney;
   yourMoney -= 10;
   updateTheScoreOnPage();
   tenChip.id = 'tenChipMove';
   gameObj.gameStarter();
 }
 
+
+function createStandButton() {
+  myStandButton = document.createElement('button');
+  myStandButton.setAttribute('class', 'standButton')
+  myStandButton.id = "standButton";
+  myStandButton.textContent = "Stand";
+  myHitButton.after(myStandButton)
+  myStandButton.addEventListener('click', stand);
+}
+//BETTING
 function bet(amount) {
   betMoney = parseInt(amount.target.innerHTML);
   if (yourMoney < betMoney) {
@@ -239,43 +262,7 @@ function bet(amount) {
     yourBetText.innerHTML = yourBet;
     yourMoneyText.innerHTML = yourMoney;
   }
-}
-
-function deal() {
-  //Create the Hit Button
-  createHitButton();
-  //Create the Stand Button
-  createStandButton();
-  //First Player get 2 cards
-  for (let i = 0; i < 2; i++) {
-    playerGetsCards()
-  }
-  //Dealer gets 2 cards
-  for (let i = 0; i < 2; i++) {
-    dealerGetsCards()
-  }
-}
-
-function createHitButton() {
-  myHitButton = document.createElement('button');
-  myHitButton.setAttribute('class', 'hitButton')
-  myHitButton.id = "hitButton";
-  myHitButton.textContent = "Hit";
-  buttonsZone.appendChild(myHitButton)
-  if (!isDealPressed) {
-    dealButton.parentNode.removeChild(dealButton);
-    isDealPressed = true;
-  }
-  myHitButton.addEventListener('click', playerGetsCards);
-}
-
-function createStandButton() {
-  myStandButton = document.createElement('button');
-  myStandButton.setAttribute('class', 'standButton')
-  myStandButton.id = "standButton";
-  myStandButton.textContent = "Stand";
-  myHitButton.after(myStandButton)
-  myStandButton.addEventListener('click', stand);
+  updateTheScoreOnPage();
 }
 
 //DEAL AND HIT
@@ -285,12 +272,53 @@ function playerGetsCards() {
   playerAccumulator = playersHandObj[playersHandObj.length - 1].value + playerAccumulator
   // console.log('playerAccumulator', playerAccumulator)
   generateTheCardDom("playerCard", playersHandObj[playersHandObj.length - 1].id, playerZone);
-  updateTheScoreOnPage();
+  // updateTheScoreOnPage();
   // autoWinOrBust();
   BJWins();
+  autoBust();
   // autoWinOrBust();
   // newCard.id = "playercardNumber" + cardNumber;
   // cardNumber++;
+  updateTheScoreOnPage();
+}
+
+//DEAL
+function deal() {
+  createHitButton();
+  createStandButton();
+  for (let i = 0; i < 2; i++) {
+    playerGetsCards()
+  }
+  for (let i = 0; i < 2; i++) {
+    dealerGetsCards()
+  }
+}
+
+//STAND
+function stand() {
+  // if (!isHitPressed) {
+  //   removeHitButton();
+  //   isHitPressed = true;
+  //   removeStandButton();
+  // }
+  removeHitButton();
+  removeStandButton();
+
+  isStand = true;
+  console.log("Stand!!!!")
+  console.log(dealersHandObj)
+
+  while (dealersAccumulator < 17) {
+    console.log("Dealerscards is less than 16?")
+    getACard(dealer)
+    setTimeout(() => {
+      generateTheCardDom('dealersCards', dealersHandObj[dealersHandObj.length - 1].id, dealerZone)
+    }, 600);
+  }
+  const firstCard = document.querySelector('.hideCard')
+  autoWinOrBust();
+  firstCard.setAttribute('class', 'dealersCards')
+  newRound.setAttribute('class', 'newRound')
 }
 
 //UPDATE THE SCORE ON PAGE
@@ -298,27 +326,61 @@ function updateTheScoreOnPage() {
   playersHandText.innerText = playerAccumulator;
   dealersHandText.innerHTML = dealersAccumulator;
   yourMoneyText.innerText = yourMoney;
-  yourBetText.innerText = betMoney;
-
+  yourBetText.innerText = yourBet;
 }
 
+//ACE CALC
+function isThereAce(turn) {
+  if (turn === player) {
+    playersHandObj.forEach((e) => {
+      // console.log("playersHand")
+      // console.log(e)
+      if (e.suit == "A") {
+        console.log("sending true")
+        return true;
+      }
+    })
+    if (turn === dealer) {
+      console.log("========")
+      dealersHandObj.forEach((e) => {
+        console.log("dealershand")
+        console.log(e);
+      })
+    }
+  }
+}
+
+//WINNING FUNCTIONS
 function BJWins() {
   if (playerAccumulator === 21) {
-    alert("BJ Win")
     console.log("BJ Win function")
     gameObj.changeWinner(player);
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute('class', 'newRound')
+    alert("BJ Win")
   }
 }
 
-function autoWinOrBust() {
+//AUTO BUST FOR PLAYER
+function autoBust() {
+  console.log("Consoling ", isThereAce(player))
+  if (isThereAce(player)) {
+    console.log("//////player'da A var")
+  }
   if (playerAccumulator > 21) {
-    console.log('autoBustfunction')
-    alert("Lost")
+    console.log("====AUTO BUST ==== PAST 21")
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute('class', 'newRound')
+    setTimeout(() => {
+      alert("AUTO BUST")
+    }, 250)
   }
 }
-
-//AUTO WIN OR BUST
+//AUTO WIN OR BUST`
 function autoWinOrBust() {
+  // isThereAce();
   console.log("Checking / Auto Win or Bust")
   console.log("Dealer: ", dealersAccumulator, " Player: ", playerAccumulator);
 
@@ -382,14 +444,32 @@ function getACard(player) {
     playersHandObj.push(tempCard)
     console.log("Player card: ", tempCard)
   }
+  updateTheScoreOnPage();
 }
 
+//DOM RELATED
+
+//GENERATE CARD DOM
 function generateTheCardDom(turn, fileName, whatZonetoAppend) {
   // console.log("generating the new card")
   newCard = document.createElement('div');
   newCard.setAttribute('class', turn);
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
   whatZonetoAppend.appendChild(newCard);
+}
+
+//CREATE HIT BUTTON
+function createHitButton() {
+  myHitButton = document.createElement('button');
+  myHitButton.setAttribute('class', 'hitButton')
+  myHitButton.id = "hitButton";
+  myHitButton.textContent = "Hit";
+  buttonsZone.appendChild(myHitButton)
+  if (!isDealPressed) {
+    dealButton.parentNode.removeChild(dealButton);
+    isDealPressed = true;
+  }
+  myHitButton.addEventListener('click', playerGetsCards);
 }
 
 //RemoveHitButton
@@ -403,41 +483,6 @@ function removeStandButton() {
   const standButton = document.querySelector('#standButton')
   standButton.remove();
 }
-
-
-//STAND
-function stand() {
-  // if (!isHitPressed) {
-  //   removeHitButton();
-  //   isHitPressed = true;
-  //   removeStandButton();
-  // }
-  removeHitButton();
-  removeStandButton();
-
-  isStand = true;
-  console.log("Stand!!!!")
-  console.log(dealersHandObj)
-
-  while (dealersAccumulator < 17) {
-    console.log("Dealerscards is less than 16?")
-    getACard(dealer)
-    setTimeout(() => {
-      generateTheCardDom('dealersCards', dealersHandObj[dealersHandObj.length - 1].id, dealerZone)
-    }, 600);
-  }
-  const firstCard = document.querySelector('.hideCard')
-  autoWinOrBust();
-  firstCard.setAttribute('class', 'dealersCards')
-  newRound.setAttribute('class', 'newRound')
-}
-
-//START THE GAME
-document.body.addEventListener('click', () => {
-  if (!gameObj.isStarted) {
-    startTheGame();
-  }
-})
 
 function newRoundFunction() {
   newRound.setAttribute('class', 'hide')
@@ -461,4 +506,19 @@ chips.forEach((chip, i) => {
 
 dealButton.addEventListener('click', deal)
 newRound.addEventListener('click', newRoundFunction);
-///Testing my config -a
+
+const cheatButton = document.querySelector('.cheatButton').addEventListener('click', () => {
+  console.log('test');
+  tempPlayerCard = cards[51];
+  playersHandObj.push(tempPlayerCard)
+  playerAccumulator = playersHandObj[playersHandObj.length - 1].value + playerAccumulator
+  // console.log('playerAccumulator', playerAccumulator)
+  generateTheCardDom("playerCard", playersHandObj[playersHandObj.length - 1].id, playerZone);
+  updateTheScoreOnPage();
+  // autoWinOrBust();
+  BJWins();
+  autoBust();
+  // autoWinOrBust();
+  // newCard.id = "playercardNumber" + cardNumber;
+  // cardNumber++;
+})

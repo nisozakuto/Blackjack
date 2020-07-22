@@ -139,7 +139,7 @@ h2 {
 
 .dealersCards {
     width: 138px;
-    height: 210px;
+    /* height: 210px; */
     border: 1px solid black;
     background-size: cover;
 }
