@@ -439,6 +439,7 @@ document.body.addEventListener('click', () => {
 })
 
 function newRoundFunction() {
+  newRound.setAttribute('class', 'hide')
   playersHandObj = [];
   dealersHandObj = [];
   playerZone.innerHTML = ""

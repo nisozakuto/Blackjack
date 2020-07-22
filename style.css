@@ -90,6 +90,7 @@ x #standButton {
     border: 1px solid black;
     background-size: cover;
 
+
 }
 
 .dealersCards {
@@ -145,6 +146,7 @@ x #standButton {
 }
 
 .dealerZone {
+    transform: rotate(10deg);
     /* background-color: greenyellow; */
     display: flex;
     flex-wrap: wrap;
@@ -154,6 +156,7 @@ x #standButton {
 }
 
 .playerZone {
+    transform: rotate(-10deg);
     /* background-color: aqua; */
     z-index: 0;
     position: relative;
