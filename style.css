@@ -3,13 +3,17 @@ html {
 }
 
 body {
-    background-color: rgb(53, 101, 77);
+    /* background-color: rgb(23, 45, 34); */
+    background-color: rgb(26, 48, 37);
+
     font-family: 'Rakkas', cursive;
     height: 100%;
 }
 
 main {
+    /* background-color: rgb(26, 48, 37); */
     height: 700px;
+    /* margin: 0 50px 0 50px */
 }
 
 p {
