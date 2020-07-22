@@ -242,6 +242,10 @@ function bet(amount) {
 }
 
 function deal() {
+  //Create the Hit Button
+  createHitButton();
+  //Create the Stand Button
+  createStandButton();
   //First Player get 2 cards
   for (let i = 0; i < 2; i++) {
     playerGetsCards()
@@ -250,12 +254,6 @@ function deal() {
   for (let i = 0; i < 2; i++) {
     dealerGetsCards()
   }
-
-  //Create the Hit Button
-  createHitButton();
-
-  //Create the Stand Button
-  createStandButton();
 }
 
 function createHitButton() {
@@ -285,26 +283,12 @@ function playerGetsCards() {
   tempPlayerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
   playersHandObj.push(tempPlayerCard)
   playerAccumulator = playersHandObj[playersHandObj.length - 1].value + playerAccumulator
-  console.log('playerAccumulator', playerAccumulator)
-  generateTheCardDom("playerCard");
-  newCard.style.backgroundImage = "url(/Blackjack/assets/" + playersHandObj[playersHandObj.length - 1].id + ".png";
-  playerZone.appendChild(newCard);
+  // console.log('playerAccumulator', playerAccumulator)
+  generateTheCardDom("playerCard", playersHandObj[playersHandObj.length - 1].id, playerZone);
   updateTheScoreOnPage();
   // autoWinOrBust();
-
-  if (playerAccumulator == 21)
-    console.log("Player Won")
-  if (playerAccumulator > 21)
-    console.log("Player Lost")
-
-  // if (currentCardNumber == 1) {
-  //   console.log("player got 1")
-  // }
-  // if (currentCardNumber > 10) {
-  //   playersHand += 10;
-  // } else {
-  //   playersHand += currentCardNumber;
-  // }
+  BJWins();
+  // autoWinOrBust();
   // newCard.id = "playercardNumber" + cardNumber;
   // cardNumber++;
 }
@@ -315,12 +299,26 @@ function updateTheScoreOnPage() {
   dealersHandText.innerHTML = dealersAccumulator;
   yourMoneyText.innerText = yourMoney;
   yourBetText.innerText = betMoney;
+}
 
+function BJWins() {
+  if (playerAccumulator === 21) {
+    alert("BJ Win")
+    console.log("BJ Win function")
+    gameObj.changeWinner(player);
+  }
+}
+
+function autoWinOrBust() {
+  if (playerAccumulator > 21) {
+    console.log('autoBustfunction')
+    alert("Lost")
+  }
 }
 
 //AUTO WIN OR BUST
 function autoWinOrBust() {
-  console.log("Checking")
+  console.log("Checking / Auto Win or Bust")
   console.log("Dealer: ", dealersAccumulator, " Player: ", playerAccumulator);
 
   if (dealersAccumulator > 21) {
@@ -330,9 +328,7 @@ function autoWinOrBust() {
     gameObj.changeWinner(dealer);
   } else if (playerAccumulator > 21) {
     console.log("Player Lost")
-  } else if (playerAccumulator === 21) {
-    console.log("BJ Win")
-    gameObj.changeWinner(player);
+    alert("You lost!!");
   } else if (dealersAccumulator == playerAccumulator) {
     alert("Push");
     yourMoney += yourBet;
@@ -345,7 +341,7 @@ function autoWinOrBust() {
   } else {
     console.log("Did not win/lose yet")
   }
-  console.log(gameObj.winner)
+
   if (gameObj.winner == player) {
     console.log(yourBet)
     yourMoney += (yourBet * 2);
@@ -360,16 +356,11 @@ function autoWinOrBust() {
 //Deal for Dealer
 function dealerGetsCards() {
   getACard(dealer)
-  const newCard = document.createElement('div');
-  newCard.setAttribute('class', 'dealersCards')
+  generateTheCardDom("dealersCards", dealersHandObj[dealersHandObj.length - 1].id, dealerZone);
   if (firstCard) {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersHandObj[dealersHandObj.length - 1].id + ".png";
-    newCard.setAttribute('class', ' dealersCards dealersFirstCard hideCard')
+    newCard.setAttribute('class', 'dealersCards dealersFirstCard hideCard')
     firstCard = false;
-  } else {
-    newCard.style.backgroundImage = "url(/Blackjack/assets/" + dealersHandObj[dealersHandObj.length - 1].id + ".png";
   }
-  dealerZone.appendChild(newCard);
   updateTheScoreOnPage();
   if (isStand)
     console.log("Standing")
@@ -379,7 +370,10 @@ function getACard(player) {
   if (player == "dealer") {
     tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
     dealersHandObj.push(tempCard)
-    console.log("Dealers card: ", tempCard)
+    dealersAccumulator += tempCard.value
+    console.log("TempCard value: ", tempCard.value)
+    console.log("dealersAccumulator: ", dealersAccumulator)
+    return tempCard.value
   }
   if (player == "player") {
     tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
@@ -388,9 +382,11 @@ function getACard(player) {
   }
 }
 
-function generateTheCardDom(turn) {
+function generateTheCardDom(turn, fileName, whatZonetoAppend) {
   newCard = document.createElement('div');
   newCard.setAttribute('class', turn);
+  newCard.style.backgroundImage = "url(/Blackjack/assets/" + fileName + ".png";
+  whatZonetoAppend.appendChild(newCard);
 }
 
 //RemoveHitButton
@@ -405,28 +401,29 @@ function removeStandButton() {
   standButton.remove();
 }
 
+
 //STAND
 function stand() {
-  if (!isHitPressed) {
-    removeHitButton();
-    isHitPressed = true;
-    removeStandButton();
-  }
+  // if (!isHitPressed) {
+  //   removeHitButton();
+  //   isHitPressed = true;
+  //   removeStandButton();
+  // }
+  removeHitButton();
+  removeStandButton();
 
   isStand = true;
   console.log("Stand!!!!")
   console.log(dealersHandObj)
-  dealersHandObj.forEach((e) => {
-    dealersAccumulator += e.value;
-    console.log('dealersAccumulator ', dealersAccumulator);
-  })
 
-  if (dealersAccumulator < 16) {
-    getACard()
+  while (dealersAccumulator < 17) {
+    console.log("Dealerscards is less than 16?")
+    getACard(dealer)
   }
   const firstCard = document.querySelector('.hideCard')
   autoWinOrBust();
   firstCard.setAttribute('class', 'dealersCards')
+  newRound.setAttribute('class', 'newRound')
 }
 
 //START THE GAME
@@ -448,8 +445,6 @@ function newRoundFunction() {
   firstCard = true;
   // createHitButton();
   // createStandButton();
-  removeHitButton();
-  removeStandButton();
   deal();
 }
 

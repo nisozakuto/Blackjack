@@ -68,7 +68,18 @@ h2 {
     justify-content: space-evenly;
 }
 
-#standButton {
+
+#hitButton,
+#standButton,
+.newRound,
+#deal {
+    border: 3px solid rgb(33, 58, 45);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+x #standButton {
     margin-left: 40px;
 }
 
@@ -104,6 +115,10 @@ h2 {
     background-image: url("./assets/red_back.png") !important;
 }
 
+.hide {
+    display: none;
+}
+
 .cardsArea {
     display: flex;
 }
@@ -114,9 +129,10 @@ h2 {
     justify-self: center;
     justify-items: center;
     justify-content: space-evenly;
-    max-width: 500px;
+    max-width: 1200px;
     position: fixed;
     bottom: 50px;
+    right: 10px;
 }
 
 .chips {
