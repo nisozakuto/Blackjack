@@ -223,8 +223,7 @@ function startTheGame(e) {
   startingH1.style.display = 'none';
   yourBet += 10;
   yourMoney -= 10;
-  yourMoneyText.innerHTML = yourMoney;
-  yourBetText.innerHTML = yourBet;
+  updateTheScoreOnPage();
   tenChip.id = 'tenChipMove';
   gameObj.gameStarter();
 }
@@ -299,6 +298,7 @@ function updateTheScoreOnPage() {
   dealersHandText.innerHTML = dealersAccumulator;
   yourMoneyText.innerText = yourMoney;
   yourBetText.innerText = betMoney;
+
 }
 
 function BJWins() {
@@ -387,7 +387,7 @@ function generateTheCardDom(turn, fileName, whatZonetoAppend) {
   // console.log("generating the new card")
   newCard = document.createElement('div');
   newCard.setAttribute('class', turn);
-  newCard.style.backgroundImage = "url(/Blackjack/assets/" + fileName + ".png";
+  newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
   whatZonetoAppend.appendChild(newCard);
 }
 
