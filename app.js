@@ -460,4 +460,4 @@ chips.forEach((chip, i) => {
 
 dealButton.addEventListener('click', deal)
 newRound.addEventListener('click', newRoundFunction);
-///Testing my config
+///Testing my config -a
