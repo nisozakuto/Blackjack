@@ -197,6 +197,7 @@ let startDiv = document.querySelector('.startDiv');
 let titleHolderDiv = document.querySelector('.titleHolder');
 const playersHandText = document.querySelector('#playersHand');
 const dealersHandText = document.querySelector('#dealersHand');
+const buttonsZone = document.querySelector('.buttonsArea');
 
 //Buttons
 const startButton = document.querySelector('.startButton');
@@ -212,7 +213,7 @@ yourMoneyText.innerHTML = yourMoney;
 
 dealButton.id = "deal";
 dealButton.textContent = "Deal";
-cardsArea.before(dealButton)
+buttonsZone.appendChild(dealButton)
 dealButton.addEventListener('click', deal);
 
 //Functions
@@ -260,7 +261,7 @@ function createHitButton() {
   myHitButton.setAttribute('class', 'hitButton')
   myHitButton.id = "hitButton";
   myHitButton.textContent = "Hit";
-  cardsArea.before(myHitButton)
+  buttonsZone.appendChild(myHitButton)
   if (!isDealPressed) {
     dealButton.parentNode.removeChild(dealButton);
     isDealPressed = true;

@@ -62,6 +62,11 @@ h2 {
     font-size: 3em;
 }
 
+.buttonsArea {
+    display: flex;
+    justify-content: center;
+}
+
 .money,
 .score,
 .cardsArea {
@@ -71,12 +76,17 @@ h2 {
 
 #hitButton,
 #standButton,
-.newRound,
 #deal {
     border: 3px solid rgb(33, 58, 45);
     width: 60px;
     height: 60px;
     border-radius: 50%;
+}
+
+.newRound {
+    width: 200px;
+    height: 60px;
+    border-radius: 25px;
 }
 
 #standButton {
@@ -200,7 +210,8 @@ h2 {
     flex-direction: row;
     justify-self: center;
     justify-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+    width: 1200px;
     max-width: 1200px;
     position: fixed;
     bottom: 50px;
