@@ -693,6 +693,8 @@ function removeStandButton() {
 
 function newRoundFunction() {
   // debugger;
+  console.log("Your bet was: ", yourBet);
+  console.log("Your current Money: ", yourMoney);
   console.log("---New Round---");
   newRound.setAttribute("class", "hide");
   playersHandObj = [];
