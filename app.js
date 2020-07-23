@@ -356,13 +356,17 @@ function announcement(winner) {
 
 //BETTING
 function bet(amount) {
+  //Bet money is only being used in this function
+  betMoney = 0;
   betMoney = parseInt(amount.target.innerHTML);
+  console.log("betMoney", betMoney);
   if (yourMoney < betMoney) {
     console.log("[[[[[ALERT]]]]]]]You do not have that much cash");
   } else {
     console.log("Your Money before Betting: ", yourMoney);
     yourBet += betMoney;
-    yourMoney -= yourBet;
+    //Just reducing the last bet since the full bet on the table is already not in player's hand
+    yourMoney = yourMoney - betMoney;
     console.log("Your Bet: ", yourBet);
     console.log("Your Money after Betting: ", yourMoney);
     yourBetText.innerHTML = yourBet;
@@ -372,7 +376,6 @@ function bet(amount) {
     yourMoneyText.setAttribute("class", "yourMoney");
     yourBetText.setAttribute("class", "yourMoney");
   }, 1000);
-  updateTheScoreOnPage();
 }
 
 //DEAL AND HIT
