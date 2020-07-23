@@ -233,7 +233,8 @@ let hitButton,
   player = "player",
   tempCar,
   reduced = false,
-  totalOfAces = 0;
+  totalOfAces = 0,
+  totalOfAcesForDealer = 0;
 
 let playersHandObj = [];
 let dealersHandObj = [];
@@ -399,16 +400,30 @@ function deal() {
 function stand() {
   removeHitButton();
   removeStandButton();
+  console.log("STAND - Dealer total: ", dealersAccumulator);
   while (dealersAccumulator < 17) {
     console.log("Dealerscards is less than 16?");
     getACard(dealer);
-    setTimeout(() => {
-      generateTheCardDom(
-        "dealersCards",
-        dealersHandObj[dealersHandObj.length - 1].id,
-        dealerZone
-      );
-    }, 900);
+    generateTheCardDom(
+      "dealersCards",
+      dealersHandObj[dealersHandObj.length - 1].id,
+      dealerZone
+    );
+    console.log("STAND/WHILE BF - Dealer total: ", dealersAccumulator);
+    if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
+      totalOfAcesForDealer++;
+      console.log("total aces: ", totalOfAces);
+    }
+    if (totalOfAcesForDealer > 0) {
+      console.log("Total Aces in Hand For Dealer: ", totalOfAcesForDealer);
+      if (dealersAccumulator > 21) {
+        console.log("AAAAAAA - Ace is being counted as 1");
+        dealersAccumulator -= 10;
+        totalOfAcesForDealer--;
+        console.log("total aces: ", totalOfAces);
+      }
+    }
+    console.log("STAND/WHILE AF - Dealer total: ", dealersAccumulator);
     updateTheScoreOnPage();
   }
   const firstCard = document.querySelector(".hideCard");
@@ -429,9 +444,7 @@ function stand() {
     updateTheMoneyOnPage();
   }
 
-  setTimeout(() => {
-    newRound.setAttribute("class", "newRound");
-  }, 100);
+  newRound.setAttribute("class", "newRound");
 }
 
 //UPDATE THE SCORE ON PAGE - used
@@ -503,8 +516,6 @@ function playerBJWinsOrBust() {
 function dealerAutoBustorWin() {
   if (dealersAccumulator === 21) {
     gameObj.changeWinner(dealer);
-    removeHitButton();
-    removeStandButton();
     newRound.setAttribute("class", "newRound");
     console.log("[[[[[ALERT]]]]]]]Dealer BJ Win");
     gameObj.changeWinner(dealer);
@@ -513,8 +524,6 @@ function dealerAutoBustorWin() {
   }
   if (dealersAccumulator > 21) {
     console.log("Dealer Past 21 thus busted");
-    removeHitButton();
-    removeStandButton();
     newRound.setAttribute("class", "newRound");
     gameObj.changeWinner(dealer);
     endGameCalc();
@@ -530,6 +539,11 @@ function dealerGetsCards() {
     dealersHandObj[dealersHandObj.length - 1].id,
     dealerZone
   );
+  console.log("Dealer total: ", dealersAccumulator);
+  if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
+    totalOfAcesForDealer++;
+    console.log("total aces: ", totalOfAces);
+  }
   if (firstCard) {
     newCard.setAttribute("class", "dealersCards dealersFirstCard hideCard");
     firstCard = false;
@@ -541,16 +555,24 @@ function getACard(player) {
   if (player == "dealer") {
     tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
     dealersHandObj.push(tempCard);
-    dealersAccumulator += tempCard.value;
+    console.log(
+      "tempCard: ",
+      tempCard.value,
+      " tempCard ID: ",
+      tempCard.id,
+      " dealersAccumulator: ",
+      dealersAccumulator
+    );
+    dealersAccumulator = tempCard.value + dealersAccumulator;
     // console.log("TempCard value: ", tempCard.value);
     // console.log("dealersAccumulator: ", dealersAccumulator);
     return tempCard.value;
   }
-  if (player == "player") {
-    tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
-    playersHandObj.push(tempCard);
-    console.log("Player card: ", tempCard);
-  }
+  // if (player == "player") {
+  //   tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
+  //   playersHandObj.push(tempCard);
+  //   console.log("Player card: ", tempCard);
+  // }
   updateTheScoreOnPage();
 }
 
@@ -619,7 +641,8 @@ function newRoundFunction() {
   yourBet = 0;
   gameObj.changeWinner(null);
   reduced = false;
-
+  totalOfAcesForDealer = 0;
+  totalOfAces = 0;
   //If you won, get your money
   //If you lost, loose your money
   initialBet();
