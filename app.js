@@ -415,12 +415,12 @@ function playerGetsCards() {
   if (playerBJWins()) {
     console.log("playerBJ is correct");
     updateTheMoneyOnPage();
-    announcement("BlackJack winning");
+    announcement("Player won with a Blackaack");
   }
   if (playerBust()) {
     console.log("playerBust is correct");
     updateTheMoneyOnPage();
-    announcement("Player Busted");
+    announcement("Dealer Won ");
   }
 
   updateTheScoreOnPage();
@@ -587,7 +587,7 @@ function dealerAutoBustorWin() {
     console.log("Dealer Past 21 thus busted");
     newRound.setAttribute("class", "newRound");
     gameObj.changeWinner(player);
-    announcement("Dealer lost!");
+    announcement("Player Won!");
     endGameCalc();
     return true;
   }
@@ -657,10 +657,10 @@ function endGameCalc() {
 //DOM RELATED
 
 //GENERATE CARD DOM
-function generateTheCardDom(turn, fileName, whatZonetoAppend) {
+function generateTheCardDom(className, fileName, whatZonetoAppend) {
   // console.log("generating the new card")
   newCard = document.createElement("div");
-  newCard.setAttribute("class", turn);
+  newCard.setAttribute("class", className);
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
   whatZonetoAppend.appendChild(newCard);
 }
@@ -763,12 +763,12 @@ const cheatButton = document
     if (playerBJWins()) {
       console.log("playerBJ is correct");
       updateTheMoneyOnPage();
-      announcement("BlackJack winning");
+      announcement("Player won with a Blackjack");
     }
     if (playerBust()) {
       console.log("playerBust is correct");
       updateTheMoneyOnPage();
-      announcement("Player Busted");
+      announcement("Dealer Won");
     }
     updateTheScoreOnPage();
     console.log("Players total Hand: ", playerAccumulator);
