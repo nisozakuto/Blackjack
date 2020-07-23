@@ -5,15 +5,15 @@ html {
 body {
     /* background-color: rgb(23, 45, 34); */
     background-color: rgb(26, 48, 37);
-
     font-family: 'Rakkas', cursive;
     height: 100%;
 }
 
 main {
-    /* background-color: rgb(26, 48, 37); */
+    background-color: rgb(53, 101, 77);
     height: 700px;
-    /* margin: 0 50px 0 50px */
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 p {
@@ -76,6 +76,28 @@ h2 {
 .cardsArea {
     display: flex;
     justify-content: space-evenly;
+}
+
+.yourMoney,
+.yourBet {}
+
+.yourMoneyAnimation,
+.yourBetAnimation {
+    animation: flickerAnimation 1s 1;
+}
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 #hitButton,

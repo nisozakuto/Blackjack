@@ -219,7 +219,7 @@ let hitButton,
   currentCardNumber,
   yourBet = 0,
   firstCard = true,
-  yourMoney = 360,
+  yourMoney = 3600,
   playersHand = 0,
   dealersHand = 0,
   cardNumber = 1,
@@ -229,7 +229,6 @@ let hitButton,
   betMoney = 0,
   dealersAccumulator = 0,
   playerAccumulator = 0,
-  isStand = false,
   dealer = "dealer",
   player = "player",
   tempCard;
@@ -245,6 +244,13 @@ const gameObj = {
   winner: null,
   changeWinner(winner) {
     this.winner = winner;
+  },
+  bet: 0,
+  increaseBet(amount) {
+    this.bet = amount;
+  },
+  decreaseBet(amount) {
+    this.bet = amount;
   },
 };
 
@@ -272,7 +278,6 @@ const tenChip = document.querySelector("#tenChip");
 
 //RUN ONE TIME
 yourMoneyText.innerHTML = yourMoney;
-
 dealButton.id = "deal";
 dealButton.textContent = "Deal";
 buttonsZone.appendChild(dealButton);
@@ -284,6 +289,7 @@ document.body.addEventListener("click", () => {
     startTheGame();
   }
 });
+
 //Functions
 function startTheGame(e) {
   cleanTheStartScreen();
@@ -298,10 +304,12 @@ function cleanTheStartScreen() {
   const startingH1 = document.querySelector("#startingH1");
   startingH1.style.display = "none";
 }
+
 function initialBet() {
   yourBet += 10;
   yourMoney -= 10;
-  updateTheScoreOnPage();
+  console.log("initial bet: ", yourBet);
+  updateTheMoneyOnPage();
 }
 
 function createStandButton() {
@@ -312,6 +320,7 @@ function createStandButton() {
   myHitButton.after(myStandButton);
   myStandButton.addEventListener("click", stand);
 }
+
 //BETTING
 function bet(amount) {
   betMoney = parseInt(amount.target.innerHTML);
@@ -323,6 +332,10 @@ function bet(amount) {
     yourBetText.innerHTML = yourBet;
     yourMoneyText.innerHTML = yourMoney;
   }
+  setTimeout(() => {
+    yourMoneyText.setAttribute("class", "yourMoney");
+    yourBetText.setAttribute("class", "yourMoney");
+  }, 2000);
   updateTheScoreOnPage();
 }
 
@@ -332,22 +345,50 @@ function playerGetsCards() {
   playersHandObj.push(tempPlayerCard);
   playerAccumulator =
     playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
-  // console.log('playerAccumulator', playerAccumulator)
   generateTheCardDom(
     "playerCard",
     playersHandObj[playersHandObj.length - 1].id,
     playerZone
   );
-  // updateTheScoreOnPage();
-  // autoWinOrBust();
-  BJWins();
-  autoBust();
-  // autoWinOrBust();
-  // newCard.id = "playercardNumber" + cardNumber;
-  // cardNumber++;
+  if (playerBJWinsOrBust()) {
+    console.log("playerBJOrBust is correct");
+    updateTheMoneyOnPage();
+  }
   updateTheScoreOnPage();
 }
 
+function winnningFunction() {
+  console.log(
+    "WinningFunction check. Player: ",
+    playerAccumulator,
+    " Dealer: ",
+    dealersAccumulator
+  );
+  if (playerAccumulator === 21) {
+    console.log("BJ Win");
+    // return
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute("class", "newRound");
+    alert("blackJack");
+    endGameCalc();
+  }
+  if (playerAccumulator > 21) {
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute("class", "newRound");
+    alert("blackJack");
+    console.log("Player past 21");
+    endGameCalc();
+    // return
+  }
+}
+
+// function winningAlert() {
+//   const wonText = document.createElement("h1");
+//   winningText.innerText("Player Won");
+//   wonText.appendChild(winningText);
+// }
 //DEAL
 function deal() {
   createHitButton();
@@ -362,18 +403,8 @@ function deal() {
 
 //STAND
 function stand() {
-  // if (!isHitPressed) {
-  //   removeHitButton();
-  //   isHitPressed = true;
-  //   removeStandButton();
-  // }
   removeHitButton();
   removeStandButton();
-
-  isStand = true;
-  console.log("Stand!!!!");
-  console.log(dealersHandObj);
-
   while (dealersAccumulator < 17) {
     console.log("Dealerscards is less than 16?");
     getACard(dealer);
@@ -383,23 +414,48 @@ function stand() {
         dealersHandObj[dealersHandObj.length - 1].id,
         dealerZone
       );
-    }, 600);
+    }, 900);
+    updateTheScoreOnPage();
   }
   const firstCard = document.querySelector(".hideCard");
-  autoWinOrBust();
   firstCard.setAttribute("class", "dealersCards");
-  newRound.setAttribute("class", "newRound");
-  setTimeout(() => {
+  dealerAutoBustorWin();
+
+  if (dealersAccumulator > playerAccumulator) {
+    console.log("Dealer Wins because has a better hand");
+    gameObj.changeWinner(dealer);
+    console.log("[[[[[ALERT]]]]]]]Dealer Wins");
+    gameObj.changeWinner(dealer);
     endGameCalc();
-  }, 1500);
+  }
+  if (dealersAccumulator === playerAccumulator) {
+    console.log("Push");
+    yourMoney += yourBet;
+    yourBet = 0;
+    updateTheMoneyOnPage();
+  }
+
+  setTimeout(() => {
+    newRound.setAttribute("class", "newRound");
+  }, 100);
 }
 
 //UPDATE THE SCORE ON PAGE
 function updateTheScoreOnPage() {
   playersHandText.innerText = playerAccumulator;
   dealersHandText.innerHTML = dealersAccumulator;
+}
+
+//UPDATE THE MONEY ON PAGE
+function updateTheMoneyOnPage() {
+  yourBetText.setAttribute("class", "yourBetAnimation yourBet");
+  yourMoneyText.setAttribute("class", "yourMoneyAnimation yourMoney");
   yourMoneyText.innerText = yourMoney;
   yourBetText.innerText = yourBet;
+  setTimeout(() => {
+    yourBetText.setAttribute("class", " yourBet");
+    yourMoneyText.setAttribute("class", " yourMoney");
+  }, 1000);
 }
 
 //ACE CALC
@@ -423,7 +479,7 @@ function isThereAce(turn) {
 }
 
 //WINNING FUNCTIONS
-function BJWins() {
+function playerBJWinsOrBust() {
   if (playerAccumulator === 21) {
     console.log("BJ Win function");
     gameObj.changeWinner(player);
@@ -431,61 +487,64 @@ function BJWins() {
     removeStandButton();
     newRound.setAttribute("class", "newRound");
     console.log("[[[[[ALERT]]]]]]]BJ Win");
-  }
-}
-
-//AUTO BUST FOR PLAYER
-function autoBust() {
-  console.log("Consoling ", isThereAce(player));
-  if (isThereAce(player)) {
-    console.log("//////player'da A var");
+    gameObj.changeWinner(player);
+    endGameCalc();
+    return true;
   }
   if (playerAccumulator > 21) {
-    console.log("====AUTO BUST ==== PAST 21");
+    console.log("Past 21 thus busted");
     removeHitButton();
     removeStandButton();
     newRound.setAttribute("class", "newRound");
-    setTimeout(() => {
-      console.log("[[[[[ALERT]]]]]]]AUTO BUST");
-    }, 250);
+    // gameObj.changeWinner(dealer);
+    gameObj.changeWinner(dealer);
+    console.log("Winner: ", gameObj.winner);
+    endGameCalc();
+    return true;
+  }
+  return false;
+}
+
+//AUTO BUST FOR PLAYER
+function playerAutoBust() {
+  if (isThereAce(player)) {
+    if (playerAccumulator > 21) {
+      console.log("Counting A as 1");
+      playerAccumulator -= 10;
+      if (playerAccumulator > 21) {
+        console.log("Is this a very rare case?");
+        console.log("====AUTO BUST ==== PAST 21");
+        removeHitButton();
+        removeStandButton();
+        newRound.setAttribute("class", "newRound");
+        setTimeout(() => {
+          console.log("[[[[[ALERT]]]]]]]AUTO BUST");
+        }, 250);
+      }
+    }
+  } else {
   }
 }
-//AUTO WIN OR BUST`
-function autoWinOrBust() {
-  // isThereAce();
-  console.log("Checking / Auto Win or Bust");
-  console.log("Dealer: ", dealersAccumulator, " Player: ", playerAccumulator);
 
+function dealerAutoBustorWin() {
+  if (dealersAccumulator === 21) {
+    gameObj.changeWinner(dealer);
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute("class", "newRound");
+    console.log("[[[[[ALERT]]]]]]]Dealer BJ Win");
+    gameObj.changeWinner(dealer);
+    endGameCalc();
+    return true;
+  }
   if (dealersAccumulator > 21) {
-    console.log("Dealer Lost");
-  } else if (dealersAccumulator === 21) {
-    console.log("BJ Win");
+    console.log("Dealer Past 21 thus busted");
+    removeHitButton();
+    removeStandButton();
+    newRound.setAttribute("class", "newRound");
     gameObj.changeWinner(dealer);
-  } else if (playerAccumulator > 21) {
-    console.log("Player Lost");
-    // console.log("[[[[[ALERT]]]]]]]You lost!!");
-  } else if (dealersAccumulator == playerAccumulator) {
-    console.log("[[[[[ALERT]]]]]]]Push");
-    yourMoney += yourBet;
-  } else if (dealersAccumulator > playerAccumulator) {
-    console.log("Dealer  wins");
-    gameObj.changeWinner(dealer);
-  } else if (playerAccumulator > dealersAccumulator) {
-    console.log("player wins");
-    gameObj.changeWinner(player);
-  } else {
-    console.log("Did not win/lose yet");
-  }
-
-  if (gameObj.winner == player) {
-    console.log(yourBet);
-    yourMoney += yourBet * 2;
-    console.log(yourMoney);
-    // console.log("[[[[[ALERT]]]]]]]You won!! $", (yourBet * 2));
-  }
-  if (gameObj.winner == dealer) {
-    console.log("ALERTTT DEALER WON");
-    // console.log("[[[[[ALERT]]]]]]]Dealer wins!!");
+    endGameCalc();
+    return true;
   }
 }
 
@@ -502,7 +561,6 @@ function dealerGetsCards() {
     firstCard = false;
   }
   updateTheScoreOnPage();
-  if (isStand) console.log("Standing");
 }
 
 function getACard(player) {
@@ -510,8 +568,8 @@ function getACard(player) {
     tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
     dealersHandObj.push(tempCard);
     dealersAccumulator += tempCard.value;
-    console.log("TempCard value: ", tempCard.value);
-    console.log("dealersAccumulator: ", dealersAccumulator);
+    // console.log("TempCard value: ", tempCard.value);
+    // console.log("dealersAccumulator: ", dealersAccumulator);
     return tempCard.value;
   }
   if (player == "player") {
@@ -530,8 +588,9 @@ function endGameCalc() {
   } else if (gameObj.winner == dealer) {
     console.log("your money is leaving you...");
   }
-  gameObj.winner = null;
+  yourBet = 0;
   updateTheScoreOnPage();
+  updateTheMoneyOnPage();
 }
 
 //DOM RELATED
@@ -572,6 +631,7 @@ function removeStandButton() {
 }
 
 function newRoundFunction() {
+  console.log("---New Round---");
   newRound.setAttribute("class", "hide");
   playersHandObj = [];
   dealersHandObj = [];
@@ -583,13 +643,12 @@ function newRoundFunction() {
   playerAccumulator = 0;
   firstCard = true;
   yourBet = 0;
+  gameObj.changeWinner(null);
   // createHitButton();
   // createStandButton();
-
   //If you won, get your money
   //If you lost, loose your money
   initialBet();
-
   deal();
 }
 
@@ -615,10 +674,8 @@ const cheatButton = document
       playerZone
     );
     updateTheScoreOnPage();
-    // autoWinOrBust();
     BJWins();
-    autoBust();
-    // autoWinOrBust();
+    playerAutoBust();
     // newCard.id = "playercardNumber" + cardNumber;
     // cardNumber++;
   });
