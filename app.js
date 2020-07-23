@@ -245,6 +245,10 @@ const gameObj = {
   gameStarter() {
     this.isStarted = true;
   },
+  gameFinisher() {
+    this.isStarted = false;
+  },
+  restarting: false,
   winner: null,
   changeWinner(winner) {
     this.winner = winner;
@@ -264,11 +268,12 @@ const yourMoneyText = document.querySelector(".yourMoney");
 const cardsArea = document.querySelector(".cardsArea");
 const dealerZone = document.querySelector(".dealerZone");
 const playerZone = document.querySelector(".playerZone");
-let startDiv = document.querySelector(".startDiv");
-let titleHolderDiv = document.querySelector(".titleHolder");
+let startDiv = document.querySelector("#announcementDiv");
+let titleHolderDiv = document.querySelector("#announcementTitle");
 const playersHandText = document.querySelector("#playersHand");
 const dealersHandText = document.querySelector("#dealersHand");
 const buttonsZone = document.querySelector(".buttonsArea");
+const startingH1 = document.querySelector("#startingH1");
 
 //Buttons
 const startButton = document.querySelector(".startButton");
@@ -288,9 +293,17 @@ buttonsZone.appendChild(dealButton);
 dealButton.addEventListener("click", deal);
 
 //START THE GAME
-document.body.addEventListener("click", () => {
+startDiv.addEventListener("click", () => {
+  // debugger;
+  alert("Clciked");
   if (!gameObj.isStarted) {
     startTheGame();
+  }
+  if (gameObj.restarting == true) {
+    newRoundFunction();
+    // debugger;
+    cleanTheStartScreen();
+    initialBet();
   }
 });
 
@@ -298,14 +311,13 @@ document.body.addEventListener("click", () => {
 function startTheGame(e) {
   cleanTheStartScreen();
   initialBet();
-  tenChip.id = "tenChipMove";
+  // tenChip.id = "tenChipMove";
   gameObj.gameStarter();
 }
 
 function cleanTheStartScreen() {
   startDiv.classList.remove("startDiv");
   titleHolderDiv.classList.remove("titleHolder");
-  const startingH1 = document.querySelector("#startingH1");
   startingH1.style.display = "none";
 }
 
@@ -325,6 +337,25 @@ function createStandButton() {
   myStandButton.addEventListener("click", stand);
 }
 
+//WINNING announcement
+function announcement(winner) {
+  startDiv.setAttribute("class", "startDiv");
+  titleHolderDiv.setAttribute("class", "titleHolder");
+  startingH1.style.display = "block";
+  startingH1.innerText = winner;
+  // gameObj.gameFinisher();
+  gameObj.restarting = true;
+  // startingH1.addEventListener("click", startTheGame());
+  // gameObj.gameFinisher();
+  // gameObj.isStarted = false;
+  // startDiv.addEventListener("click", () => {
+  //   // debugger;
+  //   if (!gameObj.isStarted) {
+  //     startTheGame();
+  //   }
+  // });
+}
+
 //BETTING
 function bet(amount) {
   betMoney = parseInt(amount.target.innerHTML);
@@ -342,6 +373,7 @@ function bet(amount) {
   }, 1000);
   updateTheScoreOnPage();
 }
+
 //DEAL AND HIT
 function playerGetsCards() {
   tempPlayerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
@@ -376,15 +408,22 @@ function playerGetsCards() {
   //     }
   //   }
   // }
-  if (playerBJWinsOrBust()) {
-    console.log("playerBJOrBust is correct");
+  if (playerBJWins()) {
+    console.log("playerBJ is correct");
     updateTheMoneyOnPage();
+    announcement("BlackJack winning");
   }
+  if (playerBust()) {
+    console.log("playerBust is correct");
+    updateTheMoneyOnPage();
+    announcement("Player Busted");
+  }
+
   updateTheScoreOnPage();
   console.log("Players total Hand: ", playerAccumulator);
 }
 
-//DEAL
+//DEAL - used
 function deal() {
   createHitButton();
   createStandButton();
@@ -434,16 +473,18 @@ function stand() {
     console.log("Dealer Wins because has a better hand");
     gameObj.changeWinner(dealer);
     console.log("[[[[[ALERT]]]]]]]Dealer Wins");
+    announcement("Dealer Won!");
     gameObj.changeWinner(dealer);
+
     endGameCalc();
   }
   if (dealersAccumulator === playerAccumulator) {
     console.log("Push");
     yourMoney += yourBet;
     yourBet = 0;
+    announcement("Push, values are equal");
     updateTheMoneyOnPage();
   }
-
   newRound.setAttribute("class", "newRound");
 }
 
@@ -465,28 +506,28 @@ function updateTheMoneyOnPage() {
   }, 1000);
 }
 
-//ACE CALC
-function isThereAce(turn) {
-  if (turn === "player") {
-    for (let i = 0; i < playersHandObj.length; i++) {
-      if (playersHandObj[i].suit == "A") {
-        console.log("sending true");
-        return true;
-      }
-    }
+// //ACE CALC
+// function isThereAce(turn) {
+//   if (turn === "player") {
+//     for (let i = 0; i < playersHandObj.length; i++) {
+//       if (playersHandObj[i].suit == "A") {
+//         console.log("sending true");
+//         return true;
+//       }
+//     }
 
-    if (turn === dealer) {
-      console.log("========");
-      dealersHandObj.forEach((e) => {
-        console.log("dealershand");
-        console.log(e);
-      });
-    }
-  }
-}
+//     if (turn === dealer) {
+//       console.log("========");
+//       dealersHandObj.forEach((e) => {
+//         console.log("dealershand");
+//         console.log(e);
+//       });
+//     }
+//   }
+// }
 
 //WINNING FUNCTIONS - used
-function playerBJWinsOrBust() {
+function playerBJWins() {
   if (playerAccumulator === 21) {
     console.log("BJ Win function");
     gameObj.changeWinner(player);
@@ -498,6 +539,9 @@ function playerBJWinsOrBust() {
     endGameCalc();
     return true;
   }
+  return false;
+}
+function playerBust() {
   if (playerAccumulator > 21) {
     console.log("Past 21 thus busted");
     removeHitButton();
@@ -660,6 +704,7 @@ const cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
     // console.log("test");
+    //prompt - to get the card from the user
     tempPlayerCard = cards[51];
     playersHandObj.push(tempPlayerCard);
     playerAccumulator =
@@ -693,9 +738,15 @@ const cheatButton = document
     //     }
     //   }
     // }
-    if (playerBJWinsOrBust()) {
-      console.log("playerBJOrBust is correct");
+    if (playerBJWins()) {
+      console.log("playerBJ is correct");
       updateTheMoneyOnPage();
+      announcement("BlackJack winning");
+    }
+    if (playerBust()) {
+      console.log("playerBust is correct");
+      updateTheMoneyOnPage();
+      announcement("Player Busted");
     }
     updateTheScoreOnPage();
     console.log("Players total Hand: ", playerAccumulator);

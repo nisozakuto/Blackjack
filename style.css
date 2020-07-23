@@ -144,7 +144,7 @@ h2 {
 .dealersCards {
     /* width: 138px;
     height: 210px; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
     /* background-size: cover; */
 
     max-width: 130px;
@@ -166,16 +166,17 @@ h2 {
 .dealersCards {
     width: 138px;
     /* height: 210px; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background-size: cover;
 }
 
+/* 
 .dealersFirstCard {
     width: 138px;
     height: 210px;
     border: 1px solid black;
     background-size: cover;
-}
+} */
 
 /* .showDealersCard {
     transition: transform 0.8s;
@@ -242,6 +243,18 @@ h2 {
     position: fixed;
     bottom: 50px;
     right: 10px;
+    /* display: flex;
+    flex-direction: row;
+    justify-self: center;
+    justify-items: center;
+    justify-content: center;
+    width: auto;
+    /* max-width: 1200px; */
+    position: relative;
+    margin: 0 auto;
+    right: 10px;
+    top: 300px;
+    */
 }
 
 .chips {
