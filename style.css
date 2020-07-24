@@ -71,6 +71,7 @@ h2 {
 .buttonsArea {
     display: flex;
     justify-content: center;
+    height: 60px;
 }
 
 .money,
@@ -402,6 +403,6 @@ h2 {
     }
 
     h1 {
-        font-size: 1em;
+        font-size: 0.8em;
     }
 }

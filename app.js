@@ -259,6 +259,9 @@ const gameObj = {
   decreaseBet(amount) {
     this.bet = amount;
   },
+  isHitButtonOnThePage: false,
+  isStandButtonOnThePage: false,
+
 };
 
 //Divs
@@ -326,12 +329,15 @@ function initialBet() {
 }
 
 function createStandButton() {
-  myStandButton = document.createElement("button");
-  myStandButton.setAttribute("class", "standButton");
-  myStandButton.id = "standButton";
-  myStandButton.textContent = "Stand";
-  myHitButton.after(myStandButton);
-  myStandButton.addEventListener("click", stand);
+  if (!gameObj.isStandButtonOnThePage) {
+    myStandButton = document.createElement("button");
+    myStandButton.setAttribute("class", "standButton");
+    myStandButton.id = "standButton";
+    myStandButton.textContent = "Stand";
+    myHitButton.after(myStandButton);
+    myStandButton.addEventListener("click", stand);
+  }
+  gameObj.isStandButtonOnThePage = true;
 }
 
 //WINNING announcement
@@ -403,6 +409,7 @@ function playerGetsCards() {
   if (playerBJWins()) {
     console.log("playerBJ is correct");
     updateTheMoneyOnPage();
+    showDealersFirstCard();
     announcement("Player won with a Blackjack");
   }
   if (playerBust()) {
@@ -424,6 +431,7 @@ function sleep(ms) {
 
 //DEAL - used
 async function deal() {
+  dealButton.style.display = "none";
   for (let i = 0; i < 2; i++) {
     await sleep(275);
     playerGetsCards();
@@ -437,19 +445,27 @@ async function deal() {
   createStandButton();
 }
 
+function showDealersFirstCard() {
+  const firstCard = document.querySelector(".hideCard");
+  firstCard.setAttribute("class", "dealersCards");
+}
 //STAND - used
-function stand() {
+async function stand() {
   removeHitButton();
   removeStandButton();
+  showDealersFirstCard();
   console.log("STAND - Dealer total: ", dealersAccumulator);
+
   while (dealersAccumulator < 17) {
     console.log("Dealerscards is less than 16?");
     getACard(dealer);
+    await sleep(800);
     generateTheCardDom(
       "dealersCards",
       dealersHandObj[dealersHandObj.length - 1].id,
       dealerZone
     );
+
     console.log("STAND/WHILE BF - Dealer total: ", dealersAccumulator);
     if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
       totalOfAcesForDealer++;
@@ -467,8 +483,8 @@ function stand() {
     console.log("STAND/WHILE AF - Dealer total: ", dealersAccumulator);
     updateTheScoreOnPage();
   }
-  const firstCard = document.querySelector(".hideCard");
-  firstCard.setAttribute("class", "dealersCards");
+
+  await sleep(475);
 
   //WINNING LOGIC WHEN YOU STAND
   if (!dealerAutoBustorWin()) {
@@ -498,9 +514,14 @@ function stand() {
     }
     // dealerAutoBustorWin();
   }
-  newRound.setAttribute("class", "newRound");
+  showNewRoundButton();
 }
 
+
+function showNewRoundButton() {
+  console.log('not showing the newRoundButton anymore')
+  // newRound.setAttribute("class", "newRound");
+}
 //UPDATE THE SCORE ON PAGE - used
 function updateTheScoreOnPage() {
   playersHandText.innerText = playerAccumulator;
@@ -546,7 +567,7 @@ function playerBJWins() {
     gameObj.changeWinner(player);
     removeHitButton();
     removeStandButton();
-    newRound.setAttribute("class", "newRound");
+    showNewRoundButton();
     console.log("[[[[[ALERT]]]]]]]BJ Win");
     gameObj.changeWinner(player);
     endGameCalc();
@@ -560,8 +581,7 @@ function playerBust() {
     console.log("Past 21 thus busted");
     removeHitButton();
     removeStandButton();
-    newRound.setAttribute("class", "newRound");
-    // gameObj.changeWinner(dealer);
+    showNewRoundButton(); // gameObj.changeWinner(dealer);
     gameObj.changeWinner(dealer);
     console.log("Winner: ", gameObj.winner);
     endGameCalc();
@@ -574,7 +594,7 @@ function playerBust() {
 function dealerAutoBustorWin() {
   if (dealersAccumulator === 21) {
     gameObj.changeWinner(dealer);
-    newRound.setAttribute("class", "newRound");
+    showNewRoundButton();
     console.log("[[[[[ALERT]]]]]]]Dealer BJ Win");
     gameObj.changeWinner(dealer);
     announcement("Dealer got Blackjack!");
@@ -583,7 +603,7 @@ function dealerAutoBustorWin() {
   }
   if (dealersAccumulator > 21) {
     console.log("Dealer Past 21 thus busted");
-    newRound.setAttribute("class", "newRound");
+    showNewRoundButton();
     gameObj.changeWinner(player);
     announcement("Player Won!");
     endGameCalc();
@@ -665,28 +685,34 @@ function generateTheCardDom(className, fileName, whatZonetoAppend) {
 
 //CREATE HIT BUTTON
 function createHitButton() {
-  myHitButton = document.createElement("button");
-  myHitButton.setAttribute("class", "hitButton");
-  myHitButton.id = "hitButton";
-  myHitButton.textContent = "Hit";
-  buttonsZone.appendChild(myHitButton);
-  if (!isDealPressed) {
-    dealButton.parentNode.removeChild(dealButton);
-    isDealPressed = true;
+  if (!gameObj.isHitButtonOnThePage) {
+
+    myHitButton = document.createElement("button");
+    myHitButton.setAttribute("class", "hitButton");
+    myHitButton.id = "hitButton";
+    myHitButton.textContent = "Hit";
+    buttonsZone.appendChild(myHitButton);
+    if (!isDealPressed) {
+      dealButton.parentNode.removeChild(dealButton);
+      isDealPressed = true;
+    }
+    myHitButton.addEventListener("click", playerGetsCards);
   }
-  myHitButton.addEventListener("click", playerGetsCards);
+  gameObj.isHitButtonOnThePage = true;
 }
 
 //RemoveHitButton
 function removeHitButton() {
   const hitButton = document.querySelector("#hitButton");
   hitButton.remove();
+  gameObj.isHitButtonOnThePage = false;
 }
 
 //RemoveStandButton
 function removeStandButton() {
   const standButton = document.querySelector("#standButton");
   standButton.remove();
+  gameObj.isStandButtonOnThePage = false;
 }
 
 function newRoundFunction() {
@@ -761,7 +787,9 @@ const cheatButton = document
     if (playerBJWins()) {
       console.log("playerBJ is correct");
       updateTheMoneyOnPage();
+      showDealersFirstCard();
       announcement("Player won with a Blackjack");
+
     }
     if (playerBust()) {
       console.log("playerBust is correct");
