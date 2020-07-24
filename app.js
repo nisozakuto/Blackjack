@@ -1,6 +1,5 @@
 console.log("start");
-let cards = [
-  {
+let cards = [{
     id: "2C",
     value: 2,
   },
@@ -361,14 +360,12 @@ function bet(amount) {
   betMoney = parseInt(amount.target.innerHTML);
   console.log("betMoney", betMoney);
   if (yourMoney < betMoney) {
-    console.log("[[[[[ALERT]]]]]]]You do not have that much cash");
+    alert("You do not have enough cash")
   } else {
     console.log("Your Money before Betting: ", yourMoney);
     yourBet += betMoney;
     //Just reducing the last bet since the full bet on the table is already not in player's hand
     yourMoney = yourMoney - betMoney;
-    console.log("Your Bet: ", yourBet);
-    console.log("Your Money after Betting: ", yourMoney);
     yourBetText.innerHTML = yourBet;
     yourMoneyText.innerHTML = yourMoney;
   }
@@ -389,6 +386,7 @@ function playerGetsCards() {
     playersHandObj[playersHandObj.length - 1].id,
     playerZone
   );
+
   if (playersHandObj[playersHandObj.length - 1].suit == "A") {
     totalOfAces++;
   }
@@ -402,16 +400,6 @@ function playerGetsCards() {
     }
   }
 
-  // if (isThereAce(player)) {
-  //   if (!reduced) {
-  //     reduced = true;
-  //     console.log("There is a new ace");
-  //     if (playerAccumulator > 21 && isThereAce(player)) {
-  //       console.log("Ace is being counted as 1");
-  //       playerAccumulator -= 10;
-  //     }
-  //   }
-  // }
   if (playerBJWins()) {
     console.log("playerBJ is correct");
     updateTheMoneyOnPage();
@@ -425,13 +413,23 @@ function playerGetsCards() {
 
   updateTheScoreOnPage();
   console.log("Players total Hand: ", playerAccumulator);
+
+}
+
+function sleep(ms) {
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
 }
 
 //DEAL - used
-function deal() {
+async function deal() {
+
   createHitButton();
   createStandButton();
   for (let i = 0; i < 2; i++) {
+    await sleep(1000);
+
     playerGetsCards();
   }
   for (let i = 0; i < 2; i++) {
@@ -500,7 +498,6 @@ function stand() {
     }
     // dealerAutoBustorWin();
   }
-
   newRound.setAttribute("class", "newRound");
 }
 
@@ -557,6 +554,7 @@ function playerBJWins() {
   }
   return false;
 }
+
 function playerBust() {
   if (playerAccumulator > 21) {
     console.log("Past 21 thus busted");
@@ -579,7 +577,7 @@ function dealerAutoBustorWin() {
     newRound.setAttribute("class", "newRound");
     console.log("[[[[[ALERT]]]]]]]Dealer BJ Win");
     gameObj.changeWinner(dealer);
-    announcement("Dealer got BJ!");
+    announcement("Dealer got Blackjack!");
     endGameCalc();
     return true;
   }
@@ -602,6 +600,7 @@ function dealerGetsCards() {
     dealersHandObj[dealersHandObj.length - 1].id,
     dealerZone
   );
+
   console.log("Dealer total: ", dealersAccumulator);
   if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
     totalOfAcesForDealer++;
@@ -660,9 +659,10 @@ function endGameCalc() {
 function generateTheCardDom(className, fileName, whatZonetoAppend) {
   // console.log("generating the new card")
   newCard = document.createElement("div");
-  newCard.setAttribute("class", className);
+  newCard.setAttribute("class", className + " cardsComingIn");
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
   whatZonetoAppend.appendChild(newCard);
+
 }
 
 //CREATE HIT BUTTON
