@@ -233,7 +233,8 @@ let hitButton,
   tempCar,
   reduced = false,
   totalOfAces = 0,
-  totalOfAcesForDealer = 0;
+  totalOfAcesForDealer = 0,
+  isDealt = false;
 
 let playersHandObj = [];
 let dealersHandObj = [];
@@ -279,7 +280,7 @@ const startingH1 = document.querySelector("#startingH1");
 
 //Buttons
 const startButton = document.querySelector(".startButton");
-const dealButton = document.createElement("button");
+let dealButton = document.createElement("button");
 const newRound = document.querySelector(".newRound");
 let myStandButton, myHitButton;
 
@@ -301,10 +302,9 @@ startDiv.addEventListener("click", () => {
     startTheGame();
   }
   if (gameObj.restarting == true) {
-    newRoundFunction();
-    // debugger;
     cleanTheStartScreen();
-    // initialBet();
+    showNewRoundButton();
+
   }
 });
 
@@ -361,24 +361,26 @@ function announcement(winner) {
 
 //BETTING
 function bet(amount) {
-  //Bet money is only being used in this function
-  betMoney = 0;
-  betMoney = parseInt(amount.target.innerHTML);
-  console.log("betMoney", betMoney);
-  if (yourMoney < betMoney) {
-    alert("You do not have enough cash")
-  } else {
-    console.log("Your Money before Betting: ", yourMoney);
-    yourBet += betMoney;
-    //Just reducing the last bet since the full bet on the table is already not in player's hand
-    yourMoney = yourMoney - betMoney;
-    yourBetText.innerHTML = yourBet;
-    yourMoneyText.innerHTML = yourMoney;
+  if (!isDealt) {
+    //Bet money is only being used in this function
+    betMoney = 0;
+    betMoney = parseInt(amount.target.innerHTML);
+    console.log("betMoney", betMoney);
+    if (yourMoney < betMoney) {
+      alert("You do not have enough cash")
+    } else {
+      console.log("Your Money before Betting: ", yourMoney);
+      yourBet += betMoney;
+      //Just reducing the last bet since the full bet on the table is already not in player's hand
+      yourMoney = yourMoney - betMoney;
+      yourBetText.innerHTML = yourBet;
+      yourMoneyText.innerHTML = yourMoney;
+    }
+    setTimeout(() => {
+      yourMoneyText.setAttribute("class", "yourMoney");
+      yourBetText.setAttribute("class", "yourMoney");
+    }, 1000);
   }
-  setTimeout(() => {
-    yourMoneyText.setAttribute("class", "yourMoney");
-    yourBetText.setAttribute("class", "yourMoney");
-  }, 1000);
 }
 
 //DEAL AND HIT
@@ -431,6 +433,7 @@ function sleep(ms) {
 
 //DEAL - used
 async function deal() {
+  isDealt = true;
   dealButton.style.display = "none";
   for (let i = 0; i < 2; i++) {
     await sleep(275);
@@ -520,7 +523,7 @@ async function stand() {
 
 function showNewRoundButton() {
   console.log('not showing the newRoundButton anymore')
-  // newRound.setAttribute("class", "newRound");
+  newRound.setAttribute("class", "newRound");
 }
 //UPDATE THE SCORE ON PAGE - used
 function updateTheScoreOnPage() {
