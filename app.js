@@ -403,7 +403,7 @@ function playerGetsCards() {
   if (playerBJWins()) {
     console.log("playerBJ is correct");
     updateTheMoneyOnPage();
-    announcement("Player won with a Blackaack");
+    announcement("Player won with a Blackjack");
   }
   if (playerBust()) {
     console.log("playerBust is correct");
@@ -424,17 +424,17 @@ function sleep(ms) {
 
 //DEAL - used
 async function deal() {
-
-  createHitButton();
-  createStandButton();
   for (let i = 0; i < 2; i++) {
-    await sleep(1000);
-
+    await sleep(275);
     playerGetsCards();
   }
   for (let i = 0; i < 2; i++) {
+    await sleep(275);
     dealerGetsCards();
   }
+
+  createHitButton();
+  createStandButton();
 }
 
 //STAND - used
@@ -593,8 +593,10 @@ function dealerAutoBustorWin() {
 }
 
 //Deal for Dealer - used
-function dealerGetsCards() {
+async function dealerGetsCards() {
   getACard(dealer);
+  // await sleep(275);
+
   generateTheCardDom(
     "dealersCards",
     dealersHandObj[dealersHandObj.length - 1].id,
@@ -607,7 +609,8 @@ function dealerGetsCards() {
     console.log("total aces: ", totalOfAces);
   }
   if (firstCard) {
-    newCard.setAttribute("class", "dealersCards dealersFirstCard hideCard");
+    // newCard.setAttribute("class", "dealersCards dealersFirstCard hideCard");
+    newCard.setAttribute("class", "dealersCards  hideCard");
     firstCard = false;
   }
   updateTheScoreOnPage();
@@ -630,11 +633,6 @@ function getACard(player) {
     // console.log("dealersAccumulator: ", dealersAccumulator);
     return tempCard.value;
   }
-  // if (player == "player") {
-  //   tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
-  //   playersHandObj.push(tempCard);
-  //   console.log("Player card: ", tempCard);
-  // }
   updateTheScoreOnPage();
 }
 

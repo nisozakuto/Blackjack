@@ -159,14 +159,12 @@ h2 {
     height: 210px; */
     /* border: 1px solid black; */
     /* background-size: cover; */
-
     max-width: 130px;
     float: left;
     width: 130px;
     height: 200px;
     background-size: 100%;
     background-repeat: no-repeat;
-
     /* animation: fadeInAnimation ease 2s;
     animation-iteration-count: 1; */
 }
@@ -184,25 +182,6 @@ h2 {
     backface-visibility: hidden;
 }
 
-.dealersCards {
-    width: 138px;
-    /* height: 210px; */
-    /* border: 1px solid black; */
-    background-size: cover;
-}
-
-/* 
-.dealersFirstCard {
-    width: 138px;
-    height: 210px;
-    border: 1px solid black;
-    background-size: cover;
-} */
-
-/* .showDealersCard {
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-} */
 
 .hideCard {
     background-image: url("./assets/red_back.png") !important;
@@ -268,6 +247,7 @@ h2 {
     width: 60px;
     height: 60px;
     border: 10px dotted blue;
+
     border-radius: 50%;
     background-color: white;
     display: flex;
@@ -276,7 +256,10 @@ h2 {
     margin: 10px;
     float: left;
 
+
 }
+
+
 
 #one {
     background-color: white;
@@ -390,5 +373,35 @@ h2 {
     100% {
         top: 1px;
         left: 350px;
+    }
+}
+
+
+
+@media screen and (max-width: 500px) {
+    /* html {
+        width: 400px;
+    } */
+
+    body {
+        /* background-color: white; */
+        width: 100vw;
+        margin: 0 auto;
+    }
+
+    .playerCard,
+    .dealersCards {
+        /* border: 1px solid black; */
+        /* background-size: cover; */
+        max-width: 65px;
+        float: left;
+        width: 65px;
+        height: 100px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    h1 {
+        font-size: 1em;
     }
 }
