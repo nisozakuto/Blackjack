@@ -1,5 +1,24 @@
 console.log("start");
 let cards = [{
+    id: "AC",
+    suit: "A",
+    value: 11,
+  },
+  {
+    id: "AD",
+    suit: "A",
+    value: 11,
+  },
+  {
+    id: "AS",
+    suit: "A",
+    value: 11,
+  },
+  {
+    id: "AH",
+    suit: "A",
+    value: 11,
+  }, {
     id: "2C",
     value: 2,
   },
@@ -191,26 +210,7 @@ let cards = [{
     id: "KH",
     value: 10,
   },
-  {
-    id: "AC",
-    suit: "A",
-    value: 11,
-  },
-  {
-    id: "AD",
-    suit: "A",
-    value: 11,
-  },
-  {
-    id: "AS",
-    suit: "A",
-    value: 11,
-  },
-  {
-    id: "AH",
-    suit: "A",
-    value: 11,
-  },
+
 ];
 
 //Variables
@@ -566,15 +566,17 @@ function updateTheMoneyOnPage() {
 //WINNING FUNCTIONS - used
 function playerBJWins() {
   if (playerAccumulator === 21) {
-    console.log("BJ Win function");
-    gameObj.changeWinner(player);
-    removeHitButton();
-    removeStandButton();
-    showNewRoundButton();
-    console.log("[[[[[ALERT]]]]]]]BJ Win");
-    gameObj.changeWinner(player);
-    endGameCalc();
-    return true;
+    if (isDealt) {
+      console.log("BJ Win function");
+      gameObj.changeWinner(player);
+      removeHitButton();
+      removeStandButton();
+      showNewRoundButton();
+      console.log("[[[[[ALERT]]]]]]]BJ Win");
+      gameObj.changeWinner(player);
+      endGameCalc();
+      return true;
+    }
   }
   return false;
 }
@@ -752,18 +754,29 @@ newRound.addEventListener("click", newRoundFunction);
 const cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
-    // console.log("test");
-    //prompt - to get the card from the user
-    tempPlayerCard = cards[51];
+    let inputCard;
+    inputCard = prompt("What card would you like to have?")
+    if (inputCard == "j" || inputCard == "j") {
+      inputCard = 11;
+    }
+    if (inputCard == "q" || inputCard == "Q") {
+      inputCard = 12;
+    }
+    if (inputCard == "k" || inputCard == "K") {
+      inputCard = 13;
+    }
+    tempPlayerCard = cards[(inputCard - 1) * 4];
+    console.log("Chosen card: ", inputCard - 1);
+
     playersHandObj.push(tempPlayerCard);
     playerAccumulator =
       playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
-    // console.log('playerAccumulator', playerAccumulator)
     generateTheCardDom(
       "playerCard",
       playersHandObj[playersHandObj.length - 1].id,
       playerZone
     );
+
     if (playersHandObj[playersHandObj.length - 1].suit == "A") {
       totalOfAces++;
     }
@@ -777,16 +790,6 @@ const cheatButton = document
       }
     }
 
-    // if (isThereAce(player)) {
-    //   if (!reduced) {
-    //     reduced = true;
-    //     console.log("There is a new ace");
-    //     if (playerAccumulator > 21 && isThereAce(player)) {
-    //       console.log("Ace is being counted as 1");
-    //       playerAccumulator -= 10;
-    //     }
-    //   }
-    // }
     if (playerBJWins()) {
       console.log("playerBJ is correct");
       updateTheMoneyOnPage();
