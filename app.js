@@ -294,6 +294,11 @@ dealButton.textContent = "Deal";
 buttonsZone.appendChild(dealButton);
 dealButton.addEventListener("click", deal);
 
+if (localStorage.getItem("yourMoneyLocal")) {
+  yourMoney = localStorage.getItem("yourMoneyLocal");
+  updateTheMoneyOnPage();
+}
+
 //START THE GAME
 startDiv.addEventListener("click", () => {
   // debugger;
@@ -537,6 +542,7 @@ function updateTheScoreOnPage() {
 
 //UPDATE THE MONEY ON PAGE
 function updateTheMoneyOnPage() {
+  saveTheNewMoney(yourMoney);
   yourBetText.setAttribute("class", "yourBetAnimation yourBet");
   yourMoneyText.setAttribute("class", "yourMoneyAnimation yourMoney");
   yourMoneyText.innerText = yourMoney;
@@ -546,7 +552,9 @@ function updateTheMoneyOnPage() {
     yourMoneyText.setAttribute("class", " yourMoney");
   }, 1000);
 }
-
+function saveTheNewMoney(yourMoney) {
+  localStorage.setItem("yourMoneyLocal", yourMoney);
+}
 //WINNING FUNCTIONS - used
 function playerBJWins() {
   if (playerAccumulator == 21) {
@@ -719,6 +727,8 @@ function newRoundFunction() {
   dealersAccumulator = 0;
   playerAccumulator = 0;
   firstCard = true;
+  updateTheMoneyOnPage();
+  updateTheScoreOnPage();
   yourBet = 0;
   gameObj.changeWinner(null);
   reduced = false;
@@ -729,6 +739,10 @@ function newRoundFunction() {
   //If you lost, loose your money
   initialBet();
   dealButton.style.display = "block";
+  chips.forEach((e) => {
+    console.log(e);
+    e.classList.remove("halfOpacity");
+  });
 }
 
 chips.forEach((chip, i) => {
@@ -789,7 +803,10 @@ let cheatButton = document
       console.log("playerBJ is correct");
       updateTheMoneyOnPage();
       //no need to run this:
-      if (dealersAccumulator != 0) showDealersFirstCard();
+      if (dealersAccumulator != 0) {
+        console.log("Test dealers accumulator is not 0");
+        showDealersFirstCard();
+      }
       announcement("Player won with a Blackjack");
     }
     if (playerBust()) {

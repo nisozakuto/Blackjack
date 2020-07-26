@@ -19,6 +19,7 @@ main {
 
 .cheatButton {
     opacity: 0.3;
+    /* display: inline; */
 }
 
 p {
@@ -47,7 +48,7 @@ h2 {
         1px 1px 0 #000;
     letter-spacing: 4px;
     margin-bottom: .4em;
-    margin-top: .4em;
+    margin-top: .1em;
 }
 
 .startDiv {
@@ -135,7 +136,7 @@ h2 {
 }
 
 .cardsArea {
-    height: 400px;
+    height: 500px;
 }
 
 .zones {
@@ -318,7 +319,7 @@ h2 {
     font-weight: 900;
     font-size: 26px;
     float: left;
-
+    cursor: pointer;
 }
 
 .hundred {
