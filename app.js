@@ -549,7 +549,7 @@ function updateTheMoneyOnPage() {
 
 //WINNING FUNCTIONS - used
 function playerBJWins() {
-  if (playerAccumulator === 21) {
+  if (playerAccumulator == 21) {
     if (isDealt) {
       console.log("BJ Win function");
       gameObj.changeWinner(player);
@@ -738,13 +738,15 @@ chips.forEach((chip, i) => {
 dealButton.addEventListener("click", deal);
 newRound.addEventListener("click", newRoundFunction);
 
-const cheatButton = document
+//CHEAT BUTTON
+let cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
+    isDealt = true;
     //By default bring 1
     let inputCard;
     inputCard = prompt("What card would you like to have?");
-    if (inputCard == "j" || inputCard == "j") {
+    if (inputCard == "j" || inputCard == "J") {
       inputCard = 11;
     } else if (inputCard == "q" || inputCard == "Q") {
       inputCard = 12;
@@ -786,7 +788,8 @@ const cheatButton = document
     if (playerBJWins()) {
       console.log("playerBJ is correct");
       updateTheMoneyOnPage();
-      showDealersFirstCard();
+      //no need to run this:
+      if (dealersAccumulator != 0) showDealersFirstCard();
       announcement("Player won with a Blackjack");
     }
     if (playerBust()) {
