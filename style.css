@@ -337,8 +337,23 @@ h2 {
 }
 
 .fiveAnimation {
-    animation: 1.5s linear 0s slide 1;
-    animation-name: five-in;
+    /* animation: 1.5s linear 0s slide 1;
+    animation-name: five-in; */
+}
+
+.chipContainerFive {
+    /* transform: rotate(360deg); */
+    transition: transform 1.5s;
+}
+
+.chipContainerFive {
+    /* transform: translateY(-600%); */
+}
+
+.chipContainerFive:focus {
+    /* transform: translateY(-300px); */
+    /* transform: rotate(0deg);
+    transition: 0s; */
 }
 
 .tenAnimation {
@@ -390,16 +405,6 @@ h2 {
 }
 
 @keyframes five-in {
-    /* 0% {
-        left: 0;
-        top: 0;
-    }
-
-    100% {
-        left: 160px;
-        top: -500px;
-    } */
-
     0% {
         top: 0%;
 

@@ -367,16 +367,19 @@ function bet(amount) {
       yourMoneyText.innerHTML = yourMoney;
     }
     if (amount.target.innerText == '1') {
-      amount.target.classList.add('oneAnimation');
+      // amount.target.classList.add('oneAnimation');
+      // setTimeout(() => {
+      //   amount.target.classList.remove('oneAnimation');
+      // }, 100);
     }
     if (amount.target.innerText == '5') {
-      amount.target.classList.add('fiveAnimation');
+      // amount.target.classList.add('fiveAnimation');
     }
     if (amount.target.innerText == '10') {
-      amount.target.classList.add('tenAnimation');
+      // amount.target.classList.add('tenAnimation');
     }
     if (amount.target.innerText == '50') {
-      amount.target.classList.add('fiftyAnimation');
+      // amount.target.classList.add('fiftyAnimation');
     }
     setTimeout(() => {
       yourMoneyText.setAttribute("class", "yourMoney");
