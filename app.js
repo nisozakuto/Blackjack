@@ -299,6 +299,11 @@ if (localStorage.getItem("yourMoneyLocal")) {
   updateTheMoneyOnPage();
 }
 
+function resetMoney() {
+  yourMoney = 3600;
+  localStorage.setItem("yourMoneyLocal", 3600);
+}
+
 //START THE GAME
 startDiv.addEventListener("click", () => {
   // debugger;
@@ -426,9 +431,15 @@ function playerGetsCards() {
   if (playerBust()) {
     console.log("playerBust is correct");
     updateTheMoneyOnPage();
-    announcement("Dealer Won ");
+    announcement("Past 21, Dealer Won");
+    //Local Storage
+    if (yourMoney == 0) {
+      console.log("playerGetsCards > playerBust function");
+      announcement("You broke... Start again");
+      saveTheNewMoney(3600);
+      updateTheMoneyOnPage();
+    }
   }
-
   updateTheScoreOnPage();
   console.log("Players total Hand: ", playerAccumulator);
 }
@@ -554,6 +565,7 @@ function updateTheMoneyOnPage() {
 }
 function saveTheNewMoney(yourMoney) {
   localStorage.setItem("yourMoneyLocal", yourMoney);
+  return yourMoney;
 }
 //WINNING FUNCTIONS - used
 function playerBJWins() {
@@ -582,6 +594,10 @@ function playerBust() {
     gameObj.changeWinner(dealer);
     console.log("Winner: ", gameObj.winner);
     endGameCalc();
+    if (yourMoney == 0) {
+      announcement("You broke... Start again");
+      resetMoney();
+    }
     return true;
   }
   return false;
@@ -716,6 +732,12 @@ function removeStandButton() {
 
 function newRoundFunction() {
   // debugger;
+  if (yourMoney == 0) {
+    announcement("You broke... Start again");
+    saveTheNewMoney(3600);
+    updateTheMoneyOnPage();
+  }
+
   console.log("Your bet was: ", yourBet);
   console.log("Your current Money: ", yourMoney);
   console.log("---New Round---");
@@ -812,6 +834,10 @@ let cheatButton = document
     if (playerBust()) {
       console.log("playerBust is correct");
       updateTheMoneyOnPage();
+      if (dealersAccumulator != 0) {
+        console.log("Test dealers accumulator is not 0");
+        showDealersFirstCard();
+      }
       announcement("Dealer Won");
     }
     updateTheScoreOnPage();
