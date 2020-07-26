@@ -2,6 +2,11 @@
 
 Blackjack game built with Javascript
 
+In Casino Niso, we have following rules: 
+
+- If Player gets a blackjack, regardless what the Dealer has, player wins.
+- You can only bet before your cards are dealt
+
 
 While developing this game, one of the challange I faced is: if different Aces can have different values. 
 After reading multiple articles and rules from different sources I found the below information and formed my logic around with it
