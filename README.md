@@ -31,8 +31,8 @@ As a developer, I would like my players to be able to browse and play this game 
 ## Wireframes
 
 I have 2 hand drawn wireframes:
-- ![](https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092449.jpg | width=300)
-- ![](https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092452.jpg | width=300)
+- ![Wireframe1](https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092449.jpg | width=300)
+- ![Wireframe2](https://github.com/nisozakuto/Blackjack/blob/master/IMG_20200720_092452.jpg | width=300)
 
 
 ## How-to-use instructions
