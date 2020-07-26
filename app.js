@@ -362,6 +362,7 @@ function announcement(winner) {
 //BETTING
 function bet(amount) {
   if (!isDealt) {
+
     //Bet money is only being used in this function
     betMoney = 0;
     betMoney = parseInt(amount.target.innerHTML);
@@ -376,10 +377,23 @@ function bet(amount) {
       yourBetText.innerHTML = yourBet;
       yourMoneyText.innerHTML = yourMoney;
     }
+    if (amount.target.innerText == '1') {
+      amount.target.classList.add('oneAnimation');
+    }
+    if (amount.target.innerText == '5') {
+      amount.target.classList.add('fiveAnimation');
+    }
+    if (amount.target.innerText == '10') {
+      amount.target.classList.add('tenAnimation');
+    }
+    if (amount.target.innerText == '50') {
+      amount.target.classList.add('fiftyAnimation');
+    }
     setTimeout(() => {
       yourMoneyText.setAttribute("class", "yourMoney");
       yourBetText.setAttribute("class", "yourMoney");
     }, 1000);
+
   }
 }
 
@@ -709,14 +723,18 @@ function createHitButton() {
 //RemoveHitButton
 function removeHitButton() {
   const hitButton = document.querySelector("#hitButton");
-  hitButton.remove();
+  if (gameObj.isHitButtonOnThePage) {
+    hitButton.remove();
+  }
   gameObj.isHitButtonOnThePage = false;
 }
 
 //RemoveStandButton
 function removeStandButton() {
   const standButton = document.querySelector("#standButton");
-  standButton.remove();
+  if (gameObj.isStandButtonOnThePage) {
+    standButton.remove();
+  }
   gameObj.isStandButtonOnThePage = false;
 }
 
@@ -754,16 +772,22 @@ newRound.addEventListener("click", newRoundFunction);
 const cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
+    //By default bring 1
     let inputCard;
     inputCard = prompt("What card would you like to have?")
     if (inputCard == "j" || inputCard == "j") {
       inputCard = 11;
-    }
-    if (inputCard == "q" || inputCard == "Q") {
+    } else if (inputCard == "q" || inputCard == "Q") {
       inputCard = 12;
-    }
-    if (inputCard == "k" || inputCard == "K") {
+    } else if (inputCard == "k" || inputCard == "K") {
       inputCard = 13;
+    } else if (inputCard == "a" || inputCard == "A") {
+      inputCard = 1;
+    } else if (inputCard > 0 && inputCard < 11) {
+      inputCard = inputCard;
+    } else {
+      alert("wrong input");
+      return;
     }
     tempPlayerCard = cards[(inputCard - 1) * 4];
     console.log("Chosen card: ", inputCard - 1);
