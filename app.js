@@ -1,5 +1,6 @@
 console.log("start");
-let cards = [{
+let cards = [
+  {
     id: "AC",
     suit: "A",
     value: 11,
@@ -18,7 +19,8 @@ let cards = [{
     id: "AH",
     suit: "A",
     value: 11,
-  }, {
+  },
+  {
     id: "2C",
     value: 2,
   },
@@ -210,7 +212,6 @@ let cards = [{
     id: "KH",
     value: 10,
   },
-
 ];
 
 //Variables
@@ -262,7 +263,6 @@ const gameObj = {
   },
   isHitButtonOnThePage: false,
   isStandButtonOnThePage: false,
-
 };
 
 //Divs
@@ -277,7 +277,7 @@ const playersHandText = document.querySelector("#playersHand");
 const dealersHandText = document.querySelector("#dealersHand");
 const buttonsZone = document.querySelector(".buttonsArea");
 const startingH1 = document.querySelector("#startingH1");
-
+const chipsArea = document.querySelector(".chipsArea");
 //Buttons
 const startButton = document.querySelector(".startButton");
 let dealButton = document.createElement("button");
@@ -304,7 +304,6 @@ startDiv.addEventListener("click", () => {
   if (gameObj.restarting == true) {
     cleanTheStartScreen();
     showNewRoundButton();
-
   }
 });
 
@@ -357,7 +356,7 @@ function bet(amount) {
     betMoney = parseInt(amount.target.innerHTML);
     console.log("betMoney", betMoney);
     if (yourMoney < betMoney) {
-      alert("You do not have enough cash")
+      alert("You do not have enough cash");
     } else {
       console.log("Your Money before Betting: ", yourMoney);
       yourBet += betMoney;
@@ -366,28 +365,26 @@ function bet(amount) {
       yourBetText.innerHTML = yourBet;
       yourMoneyText.innerHTML = yourMoney;
     }
-    if (amount.target.innerText == '1') {
+    if (amount.target.innerText == "1") {
       // amount.target.classList.add('oneAnimation');
       // setTimeout(() => {
       //   amount.target.classList.remove('oneAnimation');
       // }, 100);
     }
-    if (amount.target.innerText == '5') {
+    if (amount.target.innerText == "5") {
       // amount.target.classList.add('fiveAnimation');
     }
-    if (amount.target.innerText == '10') {
+    if (amount.target.innerText == "10") {
       // amount.target.classList.add('tenAnimation');
     }
-    if (amount.target.innerText == '50') {
+    if (amount.target.innerText == "50") {
       // amount.target.classList.add('fiftyAnimation');
     }
     setTimeout(() => {
       yourMoneyText.setAttribute("class", "yourMoney");
       yourBetText.setAttribute("class", "yourMoney");
     }, 1000);
-  } else(
-    console.log('isDealt: ', isDealt)
-  )
+  } else console.log("isDealt: ", isDealt);
 }
 
 //DEAL AND HIT
@@ -429,18 +426,20 @@ function playerGetsCards() {
 
   updateTheScoreOnPage();
   console.log("Players total Hand: ", playerAccumulator);
-
 }
 
 function sleep(ms) {
-  return new Promise(
-    resolve => setTimeout(resolve, ms)
-  );
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 //DEAL - used
 async function deal() {
   isDealt = true;
+  chips.forEach((e) => {
+    console.log(e);
+    e.classList.add("halfOpacity");
+  });
+  console.log(chipsArea);
   dealButton.style.display = "none";
   for (let i = 0; i < 2; i++) {
     await sleep(275);
@@ -526,9 +525,8 @@ async function stand() {
   showNewRoundButton();
 }
 
-
 function showNewRoundButton() {
-  console.log('not showing the newRoundButton anymore')
+  console.log("not showing the newRoundButton anymore");
   newRound.setAttribute("class", "newRound");
 }
 //UPDATE THE SCORE ON PAGE - used
@@ -671,13 +669,11 @@ function generateTheCardDom(className, fileName, whatZonetoAppend) {
   newCard.setAttribute("class", className + " cardsComingIn");
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
   whatZonetoAppend.appendChild(newCard);
-
 }
 
 //CREATE HIT BUTTON
 function createHitButton() {
   if (!gameObj.isHitButtonOnThePage) {
-
     myHitButton = document.createElement("button");
     myHitButton.setAttribute("class", "hitButton");
     myHitButton.id = "hitButton";
@@ -732,8 +728,7 @@ function newRoundFunction() {
   //If you won, get your money
   //If you lost, loose your money
   initialBet();
-  dealButton.style.display = 'block'
-
+  dealButton.style.display = "block";
 }
 
 chips.forEach((chip, i) => {
@@ -748,7 +743,7 @@ const cheatButton = document
   .addEventListener("click", () => {
     //By default bring 1
     let inputCard;
-    inputCard = prompt("What card would you like to have?")
+    inputCard = prompt("What card would you like to have?");
     if (inputCard == "j" || inputCard == "j") {
       inputCard = 11;
     } else if (inputCard == "q" || inputCard == "Q") {
@@ -793,7 +788,6 @@ const cheatButton = document
       updateTheMoneyOnPage();
       showDealersFirstCard();
       announcement("Player won with a Blackjack");
-
     }
     if (playerBust()) {
       console.log("playerBust is correct");

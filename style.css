@@ -366,6 +366,9 @@ h2 {
     animation-name: fifty-in;
 }
 
+.halfOpacity {
+    opacity: 0.2;
+}
 
 @keyframes slidein {
     from {
