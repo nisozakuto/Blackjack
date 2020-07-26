@@ -346,23 +346,12 @@ function announcement(winner) {
   titleHolderDiv.setAttribute("class", "titleHolder");
   startingH1.style.display = "block";
   startingH1.innerText = winner;
-  // gameObj.gameFinisher();
   gameObj.restarting = true;
-  // startingH1.addEventListener("click", startTheGame());
-  // gameObj.gameFinisher();
-  // gameObj.isStarted = false;
-  // startDiv.addEventListener("click", () => {
-  //   // debugger;
-  //   if (!gameObj.isStarted) {
-  //     startTheGame();
-  //   }
-  // });
 }
 
 //BETTING
 function bet(amount) {
   if (!isDealt) {
-
     //Bet money is only being used in this function
     betMoney = 0;
     betMoney = parseInt(amount.target.innerHTML);
@@ -393,8 +382,9 @@ function bet(amount) {
       yourMoneyText.setAttribute("class", "yourMoney");
       yourBetText.setAttribute("class", "yourMoney");
     }, 1000);
-
-  }
+  } else(
+    console.log('isDealt: ', isDealt)
+  )
 }
 
 //DEAL AND HIT
@@ -457,7 +447,6 @@ async function deal() {
     await sleep(275);
     dealerGetsCards();
   }
-
   createHitButton();
   createStandButton();
 }
@@ -556,26 +545,6 @@ function updateTheMoneyOnPage() {
     yourMoneyText.setAttribute("class", " yourMoney");
   }, 1000);
 }
-
-// //ACE CALC
-// function isThereAce(turn) {
-//   if (turn === "player") {
-//     for (let i = 0; i < playersHandObj.length; i++) {
-//       if (playersHandObj[i].suit == "A") {
-//         console.log("sending true");
-//         return true;
-//       }
-//     }
-
-//     if (turn === dealer) {
-//       console.log("========");
-//       dealersHandObj.forEach((e) => {
-//         console.log("dealershand");
-//         console.log(e);
-//       });
-//     }
-//   }
-// }
 
 //WINNING FUNCTIONS - used
 function playerBJWins() {
@@ -712,7 +681,7 @@ function createHitButton() {
     myHitButton.textContent = "Hit";
     buttonsZone.appendChild(myHitButton);
     if (!isDealPressed) {
-      dealButton.parentNode.removeChild(dealButton);
+      // dealButton.parentNode.removeChild(dealButton);
       isDealPressed = true;
     }
     myHitButton.addEventListener("click", playerGetsCards);
@@ -756,10 +725,12 @@ function newRoundFunction() {
   reduced = false;
   totalOfAcesForDealer = 0;
   totalOfAces = 0;
+  isDealt = false;
   //If you won, get your money
   //If you lost, loose your money
   initialBet();
-  deal();
+  dealButton.style.display = 'block'
+
 }
 
 chips.forEach((chip, i) => {
