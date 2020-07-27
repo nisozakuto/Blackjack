@@ -12,12 +12,12 @@ body {
 main {
     background-color: rgb(53, 101, 77);
     margin: 0 auto;
-    /* height: 70vh; */
     max-width: 1200px;
     width: 100%;
 }
 
-.cheatButton {
+.cheatButton,
+.blackjackButton {
     opacity: 0.3;
     /* display: inline; */
 }
@@ -506,4 +506,44 @@ h2 {
     h1 {
         font-size: 0.8em;
     }
+
+    .cardsArea {
+        height: 400px;
+    }
+
+    .chipsArea {
+        width: 338px;
+
+    }
+
+    .chipContainerOne {
+        width: 50px;
+        height: 50px;
+        border: 7px dotted blue;
+    }
+
+    .chipContainerFive {
+        width: 50px;
+        height: 50px;
+        border: 7px dotted red;
+    }
+
+    .chipContainerTen {
+        width: 50px;
+        height: 50px;
+        border: 7px dotted green;
+    }
+
+    .chipContainerFifty {
+        width: 50px;
+        height: 50px;
+        border: 7px dotted black;
+    }
+
+    .chips {
+        border: 4px dotted white;
+        width: 40px;
+        height: 40px;
+    }
+
 }

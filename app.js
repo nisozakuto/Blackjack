@@ -282,6 +282,7 @@ const chipsArea = document.querySelector(".chipsArea");
 const startButton = document.querySelector(".startButton");
 let dealButton = document.createElement("button");
 const newRound = document.querySelector(".newRound");
+const blackjackButton = document.querySelector(".blackjackButton");
 let myStandButton, myHitButton;
 
 //Chips
@@ -398,7 +399,7 @@ function bet(amount) {
 }
 
 //DEAL AND HIT
-function playerGetsCards() {
+async function playerGetsCards() {
   tempPlayerCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
   playersHandObj.push(tempPlayerCard);
   playerAccumulator =
@@ -408,7 +409,11 @@ function playerGetsCards() {
     playersHandObj[playersHandObj.length - 1].id,
     playerZone
   );
+  calcsForPlayersCard();
+}
 
+//Calcs For Players Cards - to be used in cheat buttons as well
+function calcsForPlayersCard() {
   if (playersHandObj[playersHandObj.length - 1].suit == "A") {
     totalOfAces++;
   }
@@ -423,6 +428,7 @@ function playerGetsCards() {
   }
 
   if (playerBJWins()) {
+    sleep(1000);
     console.log("playerBJ is correct");
     updateTheMoneyOnPage();
     showDealersFirstCard();
@@ -471,7 +477,9 @@ async function deal() {
 
 function showDealersFirstCard() {
   const firstCard = document.querySelector(".hideCard");
-  firstCard.setAttribute("class", "dealersCards");
+  if (firstCard) {
+    firstCard.setAttribute("class", "dealersCards");
+  }
 }
 //STAND - used
 async function stand() {
@@ -778,7 +786,6 @@ newRound.addEventListener("click", newRoundFunction);
 let cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
-    isDealt = true;
     //By default bring 1
     let inputCard;
     inputCard = prompt("What card would you like to have?");
@@ -807,39 +814,39 @@ let cheatButton = document
       playersHandObj[playersHandObj.length - 1].id,
       playerZone
     );
-
-    if (playersHandObj[playersHandObj.length - 1].suit == "A") {
-      totalOfAces++;
-    }
-
-    if (totalOfAces > 0) {
-      console.log("Total Aces in Hand: ", totalOfAces);
-      if (playerAccumulator > 21) {
-        console.log("AAAAAAA - Ace is being counted as 1");
-        playerAccumulator -= 10;
-        totalOfAces--;
-      }
-    }
-
-    if (playerBJWins()) {
-      console.log("playerBJ is correct");
-      updateTheMoneyOnPage();
-      //no need to run this:
-      if (dealersAccumulator != 0) {
-        console.log("Test dealers accumulator is not 0");
-        showDealersFirstCard();
-      }
-      announcement("Player won with a Blackjack");
-    }
-    if (playerBust()) {
-      console.log("playerBust is correct");
-      updateTheMoneyOnPage();
-      if (dealersAccumulator != 0) {
-        console.log("Test dealers accumulator is not 0");
-        showDealersFirstCard();
-      }
-      announcement("Dealer Won");
-    }
-    updateTheScoreOnPage();
-    console.log("Players total Hand: ", playerAccumulator);
+    cheatInit();
+    calcsForPlayersCard();
   });
+
+//Cheat black jack
+let cheatBlackJack = document
+  .querySelector(".blackjackButton")
+  .addEventListener("click", () => {
+    tempPlayerCard = cards[1];
+    // console.log("Chosen card: ", inputCard - 1);
+    playersHandObj.push(tempPlayerCard);
+    playerAccumulator =
+      playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
+    generateTheCardDom(
+      "playerCard",
+      playersHandObj[playersHandObj.length - 1].id,
+      playerZone
+    );
+    tempPlayerCard = cards[37];
+    // console.log("Chosen card: ", inputCard - 1);
+    playersHandObj.push(tempPlayerCard);
+    playerAccumulator =
+      playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
+    generateTheCardDom(
+      "playerCard",
+      playersHandObj[playersHandObj.length - 1].id,
+      playerZone
+    );
+    cheatInit();
+    calcsForPlayersCard();
+  });
+
+function cheatInit() {
+  sleep(1000);
+  isDealt = true;
+}
