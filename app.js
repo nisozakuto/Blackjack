@@ -694,12 +694,18 @@ function endGameCalc() {
 
 //DOM RELATED
 
+playerCardNumber = 1;
 //GENERATE CARD DOM
 function generateTheCardDom(className, fileName, whatZonetoAppend) {
   // console.log("generating the new card")
   newCard = document.createElement("div");
   newCard.setAttribute("class", className + " cardsComingIn");
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
+  if (className == "playerCard") {
+    console.log("PLAYER");
+    newCard.id = "playercardNumber" + playerCardNumber;
+    playerCardNumber++;
+  }
   whatZonetoAppend.appendChild(newCard);
 }
 
@@ -745,7 +751,7 @@ function newRoundFunction() {
     saveTheNewMoney(3600);
     updateTheMoneyOnPage();
   }
-
+  playerCardNumber = 1;
   console.log("Your bet was: ", yourBet);
   console.log("Your current Money: ", yourMoney);
   console.log("---New Round---");

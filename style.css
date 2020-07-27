@@ -183,41 +183,55 @@ h2 {
 #playercardNumber1 {
     z-index: 1;
     position: absolute;
-    transform: rotate(-5deg);
+    transform: rotate(-15deg);
 }
 
 #playercardNumber2 {
     z-index: 2;
-    position: absolute;
-    top: 5px;
-    left: 80px;
-    transform: rotate(0deg);
+    left: 9vw;
+    transform: rotate(-5deg);
 }
 
 #playercardNumber3 {
-    z-index: 3;
-    position: absolute;
+    z-index: 2;
     top: 10px;
-    left: 160px;
+    left: 3vw;
     transform: rotate(5deg);
 }
 
 #playercardNumber4 {
-    z-index: 4;
-    position: absolute;
-    top: 15px;
-    left: 240px;
+    z-index: 2;
+    top: 4vh;
+    /* left: 240px; */
     transform: rotate(15deg);
-
 }
 
-#playercardNumber4 {
-    z-index: 4;
-    position: absolute;
-    top: 20px;
-    left: 240px;
-    transform: rotate(10deg);
+#playercardNumber5 {
+    z-index: 2;
+    top: -10vh;
+    transform: rotate(-15deg);
 }
+
+#playercardNumber6 {
+    z-index: 2;
+    top: -10vh;
+    left: 9vw;
+    transform: rotate(-5deg);
+}
+
+#playercardNumber7 {
+    z-index: 2;
+    top: -10vh;
+    left: 3vw;
+    transform: rotate(5deg);
+}
+
+#playercardNumber8 {
+    z-index: 2;
+    top: -10vh;
+    transform: rotate(15deg);
+}
+
 
 
 .chipsArea {
