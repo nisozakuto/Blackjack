@@ -1,4 +1,3 @@
-console.log("start");
 let cards = [
   {
     id: "AC",
@@ -334,7 +333,6 @@ function cleanTheStartScreen() {
 function initialBet() {
   yourBet = 10;
   yourMoney -= 10;
-  console.log("initial bet: ", yourBet);
   updateTheMoneyOnPage();
 }
 
@@ -365,32 +363,15 @@ function bet(amount) {
     //Bet money is only being used in this function
     betMoney = 0;
     betMoney = parseInt(amount.target.innerHTML);
-    console.log("betMoney", betMoney);
     if (yourMoney < betMoney) {
       alert("You do not have enough cash");
     } else {
-      console.log("Your Money before Betting: ", yourMoney);
       yourBet += betMoney;
-      //Just reducing the last bet since the full bet on the table is already not in player's hand
       yourMoney = yourMoney - betMoney;
       yourBetText.innerHTML = yourBet;
       yourMoneyText.innerHTML = yourMoney;
     }
-    if (amount.target.innerText == "1") {
-      // amount.target.classList.add('oneAnimation');
-      // setTimeout(() => {
-      //   amount.target.classList.remove('oneAnimation');
-      // }, 100);
-    }
-    if (amount.target.innerText == "5") {
-      // amount.target.classList.add('fiveAnimation');
-    }
-    if (amount.target.innerText == "10") {
-      // amount.target.classList.add('tenAnimation');
-    }
-    if (amount.target.innerText == "50") {
-      // amount.target.classList.add('fiftyAnimation');
-    }
+
     setTimeout(() => {
       yourMoneyText.setAttribute("class", "yourMoney");
       yourBetText.setAttribute("class", "yourMoney");
@@ -419,9 +400,7 @@ function calcsForPlayersCard() {
   }
 
   if (totalOfAces > 0) {
-    console.log("Total Aces in Hand: ", totalOfAces);
     if (playerAccumulator > 21) {
-      console.log("AAAAAAA - Ace is being counted as 1");
       playerAccumulator -= 10;
       totalOfAces--;
     }
@@ -429,25 +408,21 @@ function calcsForPlayersCard() {
 
   if (playerBJWins()) {
     sleep(1000);
-    console.log("playerBJ is correct");
     updateTheMoneyOnPage();
     showDealersFirstCard();
     announcement("Player won with a Blackjack");
   }
   if (playerBust()) {
-    console.log("playerBust is correct");
     updateTheMoneyOnPage();
     announcement("Past 21, Dealer Won");
     //Local Storage
     if (yourMoney == 0) {
-      console.log("playerGetsCards > playerBust function");
       announcement("You broke... Start again");
       saveTheNewMoney(3600);
       updateTheMoneyOnPage();
     }
   }
   updateTheScoreOnPage();
-  console.log("Players total Hand: ", playerAccumulator);
 }
 
 function sleep(ms) {
@@ -458,10 +433,8 @@ function sleep(ms) {
 async function deal() {
   isDealt = true;
   chips.forEach((e) => {
-    console.log(e);
     e.classList.add("halfOpacity");
   });
-  console.log(chipsArea);
   dealButton.style.display = "none";
   for (let i = 0; i < 2; i++) {
     await sleep(275);
@@ -486,10 +459,7 @@ async function stand() {
   removeHitButton();
   removeStandButton();
   showDealersFirstCard();
-  console.log("STAND - Dealer total: ", dealersAccumulator);
-
   while (dealersAccumulator < 17) {
-    console.log("Dealerscards is less than 16?");
     getACard(dealer);
     await sleep(800);
     generateTheCardDom(
@@ -498,21 +468,15 @@ async function stand() {
       dealerZone
     );
 
-    console.log("STAND/WHILE BF - Dealer total: ", dealersAccumulator);
     if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
       totalOfAcesForDealer++;
-      console.log("total aces: ", totalOfAces);
     }
     if (totalOfAcesForDealer > 0) {
-      console.log("Total Aces in Hand For Dealer: ", totalOfAcesForDealer);
       if (dealersAccumulator > 21) {
-        console.log("AAAAAAA - Ace is being counted as 1");
         dealersAccumulator -= 10;
         totalOfAcesForDealer--;
-        console.log("total aces: ", totalOfAces);
       }
     }
-    console.log("STAND/WHILE AF - Dealer total: ", dealersAccumulator);
     updateTheScoreOnPage();
   }
 
@@ -521,15 +485,12 @@ async function stand() {
   //WINNING LOGIC WHEN YOU STAND
   if (!dealerAutoBustorWin()) {
     if (dealersAccumulator > playerAccumulator) {
-      console.log("Dealer Wins because has a better hand");
       gameObj.changeWinner(dealer);
-      console.log("[[[[[ALERT]]]]]]]Dealer Wins");
       announcement("Dealer Won!");
       gameObj.changeWinner(dealer);
       endGameCalc();
     }
     if (dealersAccumulator === playerAccumulator) {
-      console.log("Push");
       yourMoney += yourBet;
       yourBet = 0;
       announcement("Push, values are equal");
@@ -537,9 +498,7 @@ async function stand() {
       endGameCalc();
     }
     if (dealersAccumulator < playerAccumulator) {
-      console.log("Players Wins because has a better hand");
       gameObj.changeWinner(player);
-      console.log("[[[[[ALERT]]]]]]]Player Wins");
       announcement("Player Won!!");
       gameObj.changeWinner(player);
       endGameCalc();
@@ -550,7 +509,6 @@ async function stand() {
 }
 
 function showNewRoundButton() {
-  console.log("not showing the newRoundButton anymore");
   newRound.setAttribute("class", "newRound");
 }
 //UPDATE THE SCORE ON PAGE - used
@@ -579,12 +537,10 @@ function saveTheNewMoney(yourMoney) {
 function playerBJWins() {
   if (playerAccumulator == 21) {
     if (isDealt) {
-      console.log("BJ Win function");
       gameObj.changeWinner(player);
       removeHitButton();
       removeStandButton();
       showNewRoundButton();
-      console.log("[[[[[ALERT]]]]]]]BJ Win");
       gameObj.changeWinner(player);
       endGameCalc();
       return true;
@@ -595,12 +551,10 @@ function playerBJWins() {
 
 function playerBust() {
   if (playerAccumulator > 21) {
-    console.log("Past 21 thus busted");
     removeHitButton();
     removeStandButton();
     showNewRoundButton(); // gameObj.changeWinner(dealer);
     gameObj.changeWinner(dealer);
-    console.log("Winner: ", gameObj.winner);
     endGameCalc();
     if (yourMoney == 0) {
       announcement("You broke... Start again");
@@ -616,14 +570,12 @@ function dealerAutoBustorWin() {
   if (dealersAccumulator === 21) {
     gameObj.changeWinner(dealer);
     showNewRoundButton();
-    console.log("[[[[[ALERT]]]]]]]Dealer BJ Win");
     gameObj.changeWinner(dealer);
     announcement("Dealer got Blackjack!");
     endGameCalc();
     return true;
   }
   if (dealersAccumulator > 21) {
-    console.log("Dealer Past 21 thus busted");
     showNewRoundButton();
     gameObj.changeWinner(player);
     announcement("Player Won!");
@@ -644,13 +596,10 @@ async function dealerGetsCards() {
     dealerZone
   );
 
-  console.log("Dealer total: ", dealersAccumulator);
   if (dealersHandObj[dealersHandObj.length - 1].suit == "A") {
     totalOfAcesForDealer++;
-    console.log("total aces: ", totalOfAces);
   }
   if (firstCard) {
-    // newCard.setAttribute("class", "dealersCards dealersFirstCard hideCard");
     newCard.setAttribute("class", "dealersCards  hideCard");
     firstCard = false;
   }
@@ -661,17 +610,7 @@ function getACard(player) {
   if (player == "dealer") {
     tempCard = cards[Math.floor(Math.random() * cards.length - 1) + 1];
     dealersHandObj.push(tempCard);
-    console.log(
-      "tempCard: ",
-      tempCard.value,
-      " tempCard ID: ",
-      tempCard.id,
-      " dealersAccumulator: ",
-      dealersAccumulator
-    );
     dealersAccumulator = tempCard.value + dealersAccumulator;
-    // console.log("TempCard value: ", tempCard.value);
-    // console.log("dealersAccumulator: ", dealersAccumulator);
     return tempCard.value;
   }
   updateTheScoreOnPage();
@@ -681,9 +620,7 @@ function getACard(player) {
 function endGameCalc() {
   if (gameObj.winner == player) {
     yourMoney = yourBet * 2 + yourMoney;
-    console.log("Your money now is: ", yourMoney);
   } else if (gameObj.winner == dealer) {
-    console.log("your money is leaving you...");
   } else if (gameObj.winner == null) {
     yourMoney += yourBet;
   }
@@ -696,7 +633,6 @@ function endGameCalc() {
 
 //GENERATE CARD DOM
 function generateTheCardDom(className, fileName, whatZonetoAppend) {
-  // console.log("generating the new card")
   newCard = document.createElement("div");
   newCard.setAttribute("class", className + " cardsComingIn");
   newCard.style.backgroundImage = "url(./assets/" + fileName + ".png";
@@ -746,9 +682,6 @@ function newRoundFunction() {
     updateTheMoneyOnPage();
   }
 
-  console.log("Your bet was: ", yourBet);
-  console.log("Your current Money: ", yourMoney);
-  console.log("---New Round---");
   newRound.setAttribute("class", "hide");
   playersHandObj = [];
   dealersHandObj = [];
@@ -765,12 +698,9 @@ function newRoundFunction() {
   totalOfAcesForDealer = 0;
   totalOfAces = 0;
   isDealt = false;
-  //If you won, get your money
-  //If you lost, loose your money
   initialBet();
   dealButton.style.display = "block";
   chips.forEach((e) => {
-    console.log(e);
     e.classList.remove("halfOpacity");
   });
 }
@@ -786,7 +716,6 @@ newRound.addEventListener("click", newRoundFunction);
 let cheatButton = document
   .querySelector(".cheatButton")
   .addEventListener("click", () => {
-    //By default bring 1
     let inputCard;
     inputCard = prompt("What card would you like to have?");
     if (inputCard == "j" || inputCard == "J") {
@@ -804,7 +733,6 @@ let cheatButton = document
       return;
     }
     tempPlayerCard = cards[(inputCard - 1) * 4];
-    console.log("Chosen card: ", inputCard - 1);
 
     playersHandObj.push(tempPlayerCard);
     playerAccumulator =
@@ -823,7 +751,6 @@ let cheatBlackJack = document
   .querySelector(".blackjackButton")
   .addEventListener("click", () => {
     tempPlayerCard = cards[1];
-    // console.log("Chosen card: ", inputCard - 1);
     playersHandObj.push(tempPlayerCard);
     playerAccumulator =
       playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
@@ -833,7 +760,6 @@ let cheatBlackJack = document
       playerZone
     );
     tempPlayerCard = cards[37];
-    // console.log("Chosen card: ", inputCard - 1);
     playersHandObj.push(tempPlayerCard);
     playerAccumulator =
       playersHandObj[playersHandObj.length - 1].value + playerAccumulator;
